@@ -78,19 +78,19 @@ const gruffaloCrumble = {
 
 
 const listFoods = (recipe) => {
-  let result = [];
-  for (let ingredient of recipe.ingredients) {
-    let first = false;
-    for (let i = 0; i < ingredient.length; i++) {
-      if (ingredient[i] === ' ' && first) {
-        result.push(ingredient.slice(i + 1));
-        break;
-      }
-      if (ingredient[i] === ' ' && !first) {
-        first = true;
-        continue;
+  const space = ' ';
+  const result = [];
+  for (const ingredient of recipe.ingredients) {
+    let spaceCount = 0;
+    let food = '';
+    for (const char of ingredient) {
+      if (spaceCount > 1) {
+        food += char;
+      } else if (char === space) {
+        spaceCount++;
       }
     }
+    result.push(food);
   }
   return result;
 };
@@ -102,7 +102,7 @@ Write a function named splitFoods that uses split to produce the same output as 
 
 You may also use other string or array methods.
 ------------------------------------------------------------------------------------------------ */
-
+//This is probably not a very good solution, as split is not meant for this...
 const splitFoods = (recipe) => {
   let result = [];
   for (const ingredient of recipe.ingredients) {
@@ -232,31 +232,46 @@ For example, extractVowels('gregor') returns ['grgr', 'eo'].
 
 Similarly, extractVowels('The quick brown fox') returns ['Th qck brwn fx', 'eioou']
 ------------------------------------------------------------------------------------------------ */
+//I think this is the cleanest answer.
 const extractVowels = (str) => {
-  const leftOver = [];
+  const leftover = [];
   const extracted = [];
   for (const char of str) {
     if (!vowels.includes(char)) {
-      leftOver.push(char);
-      continue;
+      leftover.push(char);
+    } else {
+      extracted.push(char);
     }
-    extracted.push(char);
   }
-  return [leftOver.join(''), extracted.sort().join('')];
+  return [leftover.join(''), extracted.sort().join('')];
 };
-//Now the real question is... which is quicker?
+//This is the fastest close second.
 const extractVowels2 = (str) => {
-  const input = [...str];
+  let leftOver = '';
   const extracted = [];
-  for (let i = 0; i < input.length; i++) {
-    if (!vowels.includes(input[i])) {
-      continue;
+  for (const char of str) {
+    if (!vowels.includes(char)) {
+      leftOver += char;
+    } else {
+      extracted.push(char);
     }
-    extracted.push(input.splice(i, 1));
-    i--; //Sub 1 to make up for splicing
   }
-  return [input.join(''), extracted.sort().join('')];
+  return [leftOver, extracted.sort().join('')];
 };
+//You can go insanely fast without the need to sort, as you can make both just string concatenation.
+const extractVowels3 = (str) => {
+  let leftOver = '';
+  let extracted = '';
+  for (const char of str) {
+    if (!vowels.includes(char)) {
+      leftOver += char;
+    } else {
+      extracted += char;
+    }
+  }
+  return [leftOver, extracted];
+};
+//I tried doing [...extracted].sort().join('') as well, with the concatenation, but it's just not as fast as using an array.
 /* ------------------------------------------------------------------------------------------------
 TESTS
 

@@ -8,9 +8,7 @@ Write a function named oddValues that, given an array of integers as input, uses
 For example, oddValues([1,2,3]) returns [1,3].
 ------------------------------------------------------------------------------------------------ */
 
-const oddValues = (arr) => {
-  // Solution code here...
-};
+const oddValues = (arr) => arr.filter(num => num % 2 !== 0);
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 2
@@ -23,9 +21,7 @@ For example, filterStringsWithVowels('gregor','hound','xyz') returns ['gregor', 
 ------------------------------------------------------------------------------------------------ */
 
 
-const filterStringsWithVowels = (arr) => {
-  // Solution code here...
-};
+const filterStringsWithVowels = (arr) => arr.filter(word => word.match(/[aeiouAEIU]/));
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -36,9 +32,7 @@ Write a function named notInFirstArray that, given two arrays as input, uses fil
 For example, notInFirstArray([1,2,3], [1,2,3,4]) returns [4].
 ------------------------------------------------------------------------------------------------ */
 
-const notInFirstArray = (forbiddenValues, arr) => {
-  // Solution code here...
-};
+const notInFirstArray = (forbiddenValues, arr) => arr.filter(num => !forbiddenValues.includes(num));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
@@ -79,9 +73,7 @@ const snorlaxData = {
   weight: 4600,
 };
 
-const getBaseStatGreaterThan = (arr, minBaseStat) => {
-  // Solution code here...
-};
+const getBaseStatGreaterThan = (arr, minBaseStat) => arr.filter(statInfo => statInfo.baseStat > minBaseStat);
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 5
@@ -91,9 +83,7 @@ Write a function named getStatName that is an extension of your getBaseStatGreat
 For example, getStatName(snorlaxData.stats, 50) will return ['special-defense', 'special-attack'].
 ------------------------------------------------------------------------------------------------ */
 
-const getStatName = (arr, minBaseStat) => {
-  // Solution code here...
-};
+const getStatName = (arr, minBaseStat) => getBaseStatGreaterThan(arr, minBaseStat).map(statInfo => statInfo.stat.name);
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 6
@@ -144,10 +134,7 @@ const characters = [
   },
 ];
 
-const getCharactersWithoutChildren = (arr) => {
-  // Solution code here...
-};
-
+const getCharactersWithoutChildren = (arr) => arr.filter(house => !house.children);
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 7 - Stretch Goal
 
@@ -156,9 +143,7 @@ Write a function named evenOddNumericValues that, given an array as input, uses 
 For example: evenOddNumericValues(['Gregor', 2, 4, 1]) returns ['even', 'even', 'odd'].
 ------------------------------------------------------------------------------------------------ */
 
-const evenOddNumericValues = (arr) => {
-  // Solution code here...
-};
+const evenOddNumericValues = (arr) => arr.filter(value => typeof value === 'number').map(number => number % 2 === 0 ? 'even' : 'odd');
 
 /* ------------------------------------------------------------------------------------------------
 TESTS

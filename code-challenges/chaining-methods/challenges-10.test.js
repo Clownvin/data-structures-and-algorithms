@@ -109,10 +109,8 @@ CHALLENGE 5
 Write a function named findShortest that, given the Star Wars data from Challenge 6, uses any combination of filter, map and reduce to return the name of the shortest character.
 ------------------------------------------------------------------------------------------------ */
 
-//This one in particular is WRONG! Or rather, the test for it is!
-//It complained that C-3PO isn't shorter than R2-D2! They're both 5 characters, so both should be acceptable answers.
-//A simple change from < to <= "fixes" it, but this is just changing it from "first shortest name" to "last shortest name".
-let findShortest = (data) => data.reduce((selected, curr) => !selected || curr.name.length <= selected.length ? curr.name : selected, '');
+//Lmao, I missread the problem and thought it was asking for shortest name LOL.
+let findShortest = (data) => data.reduce((selected, curr) => !selected || Number(curr.height) < Number(selected.height) ? curr : selected, null).name;
 
 /* ------------------------------------------------------------------------------------------------
 TESTS

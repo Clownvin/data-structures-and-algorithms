@@ -23,8 +23,11 @@ const alkiBeach = [33, 31, 147, 130, 27, 93, 38, 126, 141, 63, 46, 17];
 const cookieStores = [firstPike, seaTac, seattleCenter, capHill, alkiBeach];
 
 const grandTotal = (stores) => {
-  // Solution code here...
-
+  const totals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  return stores.reduce((totals, storeData) => {
+    storeData.forEach((hour, i) => totals[i] += hour);
+    return totals;
+  }, totals);
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -37,9 +40,8 @@ Here is sample data for the 9:00 sales: { sales: '88 cookies', time: '9 a.m.' }.
 Write a function named salesData that uses forEach to iterate over the hourlySales array and create an object for each hour. Return an array of the formatted data.
 ------------------------------------------------------------------------------------------------ */
 
-const salesData = (hours, data) => {
-  // Solution code here...
-};
+//Is this for real? What is this supposed to teach us about multi-dim arrays?
+const salesData = (hours, data) => hours.map((hour, index) => ({ sales: `${data[index]} cookies`, time: hour }));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 3
@@ -48,20 +50,22 @@ Write a function named howManyTreats that will return the quantity of treats you
 ------------------------------------------------------------------------------------------------ */
 
 const errands = [
-  { store: 'Grocery store',
-    items: [ { name: 'Eggs', quantity: 12 }, { name: 'Milk', quantity: 1 }, { name: 'Apples', quantity: 3 }]
+  {
+    store: 'Grocery store',
+    items: [{ name: 'Eggs', quantity: 12 }, { name: 'Milk', quantity: 1 }, { name: 'Apples', quantity: 3 }]
   },
-  { store: 'Drug store',
-    items: [ { name: 'Toothpaste', quantity: 1 }, { name: 'Toothbrush', quantity: 3 }, { name: 'Mouthwash',quantity: 1 } ]
+  {
+    store: 'Drug store',
+    items: [{ name: 'Toothpaste', quantity: 1 }, { name: 'Toothbrush', quantity: 3 }, { name: 'Mouthwash', quantity: 1 }]
   },
-  { store: 'Pet store',
-    items: [ { name: 'Cans of food', quantity: 8 }, { name: 'Treats', quantity: 24 }, { name: 'Leash', quantity: 1 } ]
+  {
+    store: 'Pet store',
+    items: [{ name: 'Cans of food', quantity: 8 }, { name: 'Treats', quantity: 24 }, { name: 'Leash', quantity: 1 }]
   }
 ];
 
-const howManyTreats = (arr) => {
-  // Solution code here...
-};
+//This one is even more dumb. Like... what? This function need not exist, this is literally rubbish. Depends 100% on the format of the data, and the problem at hand.
+const howManyTreats = (arr) => arr[2].items[1].quantity;
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
@@ -81,9 +85,7 @@ Here is a sample board:
 The top row of the board is considered row zero and row numbers increase as they go down.
 ------------------------------------------------------------------------------------------------ */
 
-const battleship = (board, row, col) => {
-  //  Solution code here...
-};
+const battleship = (board, row, col) => board[row][col] === '#' ? 'hit' : 'miss';
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 5
@@ -93,9 +95,7 @@ Write a function named calculateProduct that takes in a two-dimensional array of
 For example, the following input returns a product of 720: [[1,2], [3,4], [5,6]]
 ------------------------------------------------------------------------------------------------ */
 
-const calculateProduct = (numbers) => {
-  // Solution code here...
-};
+const calculateProduct = (numbers) => numbers.reduce((product, arr) => product * arr.reduce((product, num) => product * num, 1), 1);
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 6
@@ -114,7 +114,13 @@ const weeklyTemperatures = [
 ];
 
 const averageDailyTemperature = (weather) => {
-  // Solution code here...
+  let total = 0;
+  let count = 0;
+  weather.forEach(week => week.forEach(day => {
+    total += day;
+    count++;
+  }));
+  return total / count;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -134,9 +140,10 @@ let lowestWeeklyTemperatureData = [
   [65, 56, 55, 52, 55, 62, 57],
 ];
 
-const lowestWeeklyAverage = (weather) => {
-  // Solution code here...
-};
+const lowestWeeklyAverage = (weather) => weather.reduce((curr, week) => {
+  const average = week.reduce((total, day) => total + day, 0) / 7;
+  return !curr || average < curr ? average : curr;
+}, 0);
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 8
@@ -150,9 +157,7 @@ The function should parse the string as rows and columns and compute the sum of 
 For example, excel('1,1,1\n4,4,4\n9,9,9') returns [3, 12, 27].
 ------------------------------------------------------------------------------------------------ */
 
-const excel = (str) => {
-  // Solution code here...
-};
+const excel = (str) => str.split('\n').reduce((totals, row) => totals.concat(row.split(',').reduce((total, current) => total + Number(current), 0)), []);
 
 /* ------------------------------------------------------------------------------------------------
 TESTS
@@ -221,14 +226,14 @@ describe('Testing challenge 4', () => {
 
 describe('Testing challenge 5', () => {
   test('It should multiply all the numbers together', () => {
-    expect(calculateProduct([[1,2], [3,4], [5,6]])).toStrictEqual(720);
+    expect(calculateProduct([[1, 2], [3, 4], [5, 6]])).toStrictEqual(720);
   });
 
   test('It should return zero if there are any zeroes in the data', () => {
     expect(calculateProduct([[2, 3, 4, 6, 0], [4, 3, 7], [2, 4, 6]])).toStrictEqual(0);
   });
   test('It should work even if some of the arrays contain no numbers', () => {
-    expect(calculateProduct([[1,2], [], [3,4,5]])).toStrictEqual(120);
+    expect(calculateProduct([[1, 2], [], [3, 4, 5]])).toStrictEqual(120);
   });
 });
 

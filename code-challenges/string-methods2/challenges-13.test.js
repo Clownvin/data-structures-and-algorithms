@@ -101,18 +101,7 @@ For example, ['Tuesday', 'Monday', 'Wednesday and Thursday', 'Tuesday 2', 'Thurs
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-const sortByDay = (arr) => {
-  const week = [[],[],[],[],[],[],[]];
-  arr.forEach(event => {
-    daysOfWeek.forEach((day, index) => {
-      if (!event.includes(day)) {
-        return;
-      }
-      week[index].push(event);
-    });
-  });
-  return week;
-};
+const sortByDay = (arr) => daysOfWeek.map(day => arr.reduce((events, event) => event.includes(day) ? events.concat(event) : events, []));;
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 10 - Stretch Goal

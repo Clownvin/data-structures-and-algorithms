@@ -6,13 +6,13 @@
   "scripts": {
     "test": "jest --coverage --verbose",
     "watch": "jest --watchAll",
-		"lint": "eslint '**/*.js'"
+    "lint": "eslint '**/*.js'"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-		"eslint": "^6.1.0",
+    "eslint": "^6.1.0",
     "jest": "^24.8.0"
   }
 }

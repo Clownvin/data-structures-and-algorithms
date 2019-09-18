@@ -25,4 +25,4 @@ module.exports = exports = {
     }
     return newArr;
   }
-}
+};

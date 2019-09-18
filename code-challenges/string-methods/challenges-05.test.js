@@ -78,19 +78,10 @@ const gruffaloCrumble = {
 
 
 const listFoods = (recipe) => {
-  const space = ' ';
   const result = [];
   for (const ingredient of recipe.ingredients) {
-    let spaceCount = 0;
-    let food = '';
-    for (const char of ingredient) {
-      if (spaceCount > 1) {
-        food += char;
-      } else if (char === space) {
-        spaceCount++;
-      }
-    }
-    result.push(food);
+    let intermediate = ingredient.slice(ingredient.indexOf(' ') + 1);
+    result.push(intermediate.slice(intermediate.indexOf(' ') + 1));
   }
   return result;
 };

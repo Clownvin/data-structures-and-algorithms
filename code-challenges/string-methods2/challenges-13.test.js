@@ -42,7 +42,7 @@ Write a function named onlyOddChars that takes in a string and returns only the 
 For example, 'abcdefg' returns 'bdf'
 ------------------------------------------------------------------------------------------------ */
 
-const onlyOddChars = (str) => [...str].filter((char, i) => i % 2 !== 0).join('');
+const onlyOddChars = (str) => [...str].filter((char, i) => i % 2).join('');
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 5

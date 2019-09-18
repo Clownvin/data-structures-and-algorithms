@@ -30,7 +30,7 @@ For example, (123) 456-7890 returns 1234567890
 
 //const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(')', '').replace('(', '').replace(' ', '').replace('-', ''));
 
-const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(/[\(\)\-\s]/g, ''));
+const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(/[()\-\s]/g, ''));
 
 
 

@@ -140,18 +140,7 @@ let lowestWeeklyTemperatureData = [
   [65, 56, 55, 52, 55, 62, 57],
 ];
 
-const lowestWeeklyAverage = (weeks) => {
-  const weeklyAverages = weeks.map((week) => {
-    return week.reduce((totalTemp, currentTemp) => {
-      return totalTemp + currentTemp;
-    }) / week.length;
-  });
-  return weeklyAverages.reduce((lowest, current) => {
-    return current < lowest ? current : lowest;
-  });
-};
-
-const lowestWeeklyAverage2 = (weeks) => weeks.reduce((lowestAverage, week) => {
+const lowestWeeklyAverage = (weeks) => weeks.reduce((lowestAverage, week) => {
   const weeklyAverage = week.reduce((total, dailyTemp) => total + dailyTemp) / week.length;
   return weeklyAverage < lowestAverage ? weeklyAverage : lowestAverage;
 }, 1000);

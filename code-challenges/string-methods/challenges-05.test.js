@@ -237,6 +237,7 @@ const extractVowels = (str) => {
   return [leftover.join(''), extracted.sort().join('')];
 };
 //This is the fastest close second.
+/*
 const extractVowels2 = (str) => {
   let leftOver = '';
   const extracted = [];
@@ -261,7 +262,7 @@ const extractVowels3 = (str) => {
     }
   }
   return [leftOver, extracted];
-};
+};*/
 //I tried doing [...extracted].sort().join('') as well, with the concatenation, but it's just not as fast as using an array.
 /* ------------------------------------------------------------------------------------------------
 TESTS

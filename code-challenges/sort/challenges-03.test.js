@@ -104,7 +104,7 @@ const compare = (a, b, ...comparisons) => {
   return comparisons[end](a, b);
 };
 
-const sortPeopleBetter = (arr) => arr.sort((a, b) => compare(a, b, 
+const sortPeopleBetter = (arr) => arr.sort((a, b) => compare(a, b,
   (a, b) => a.lastName.localeCompare(b.lastName),
   (a, b) => a.firstName.localeCompare(b.firstName),
   (a, b) => a.age - b.age

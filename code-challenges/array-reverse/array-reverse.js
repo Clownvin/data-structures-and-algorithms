@@ -8,4 +8,4 @@ module.exports = function reverseArray(array) {
     array[array.length - i - 1] = temp;
   }
   return array;
-}
+};

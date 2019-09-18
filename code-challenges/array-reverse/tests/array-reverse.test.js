@@ -14,4 +14,4 @@ describe('Array reverse', () => {
     expect(arrayReverse(testArray3)).toEqual([]);
     expect(() => arrayReverse(testArray4)).toThrowError(new Error('Null pointer exception'));
   });
-})
+});

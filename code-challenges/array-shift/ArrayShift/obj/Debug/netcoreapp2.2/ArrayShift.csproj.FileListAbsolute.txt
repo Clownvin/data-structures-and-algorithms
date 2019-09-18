@@ -1,0 +1,11 @@
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/bin/Debug/netcoreapp2.2/ArrayShift.deps.json
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/bin/Debug/netcoreapp2.2/ArrayShift.runtimeconfig.json
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/bin/Debug/netcoreapp2.2/ArrayShift.runtimeconfig.dev.json
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/bin/Debug/netcoreapp2.2/ArrayShift.dll
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/bin/Debug/netcoreapp2.2/ArrayShift.pdb
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.csprojAssemblyReference.cache
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.csproj.CoreCompileInputs.cache
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.AssemblyInfoInputs.cache
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.AssemblyInfo.cs
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.dll
+/home/clownvin/git/data-structures-and-algorithms/code-challenges/array-shift/ArrayShift/obj/Debug/netcoreapp2.2/ArrayShift.pdb

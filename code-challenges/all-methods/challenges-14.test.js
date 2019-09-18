@@ -8,7 +8,7 @@ Write a function named toTitleCase that takes in an array of strings and returns
 For example, ['apple', 'banana', 'MacGyver'] returns ['Apple', 'Banana', 'MacGyver'].
 ------------------------------------------------------------------------------------------------ */
 
-const toTitleCase = (arr) => arr.map(string => string.slice(0, 1).toUpperCase() + string.slice(1));
+const toTitleCase = (arr) => arr.map(string => string.slice(0, 1).toUpperCase() + string.slice(1)); //'apple' => 'A' + 'pple' = 'Apple'
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 2
@@ -82,8 +82,9 @@ let starWarsData = [{
 }];
 
 let biggerThanLuke = (arr) => {
-  const skywalkerHeight = Number(arr.reduce((skywalker, curr) => curr.name === 'Luke Skywalker' ? curr : skywalker, { height: 172 }).height);
-  return arr.filter((character) => Number(character.height) > skywalkerHeight).map((character) => character.name).join(' - ');
+  //const skywalkerHeight = Number(arr.reduce((skywalker, curr) => curr.name === 'Luke Skywalker' ? curr : skywalker, { height: 172 }).height);
+  const mass = Number(arr.reduce((luke, curr) => curr.name === 'Luke Skywalker' ? curr : luke, {mass: 77}).mass);
+  return arr.filter((character) => Number(character.mass) > mass).reduce((acc, character) => acc ? `${acc} - ${character.name}` : `${character.name}`, '');
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -104,13 +105,20 @@ const sortBy = (property, arr) => {
   return arr.sort((a, b) => {
     const valA = a[property];
     const valB = b[property];
-    switch (typeof valA) {
-    default:
-    case 'number':
+
+    const type = typeof valA;
+    if (type === 'number') {
       return valA - valB;
-    case 'string':
+    } else {
       return valA.localeCompare(valB);
     }
+    // switch (typeof valA) {
+    // default:
+    // case 'number':
+    //   return valA - valB;
+    // case 'string':
+    //   return valA.localeCompare(valB);
+    // }
   });
 };
 

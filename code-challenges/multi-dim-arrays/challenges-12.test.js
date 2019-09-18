@@ -140,10 +140,25 @@ let lowestWeeklyTemperatureData = [
   [65, 56, 55, 52, 55, 62, 57],
 ];
 
-const lowestWeeklyAverage = (weather) => weather.reduce((curr, week) => {
+const lowestWeeklyAverage = (weeks) => {
+  const weeklyAverages = weeks.map((week) => {
+    return week.reduce((totalTemp, currentTemp) => {
+      return totalTemp + currentTemp;
+    }) / week.length;
+  });
+  return weeklyAverages.reduce((lowest, current) => {
+    return current < lowest ? current : lowest;
+  });
+};
+
+const lowestWeeklyAverage2 = (weeks) => weeks.reduce((lowestAverage, week) => {
+  const weeklyAverage = week.reduce((total, dailyTemp) => total + dailyTemp) / week.length;
+  return weeklyAverage < lowestAverage ? weeklyAverage : lowestAverage;
+}, 1000);
+/*const lowestWeeklyAverage = (weather) => weather.reduce((curr, week) => {
   const average = week.reduce((total, day) => total + day, 0) / 7;
   return !curr || average < curr ? average : curr;
-}, 0);
+}, 0);*/
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 8
@@ -151,14 +166,16 @@ CHALLENGE 8
 Write a function called excel that accepts a string representing rows and columns in a table.
 
 Rows are seperated by newline "\n" characters. Columns are seperated by commas. For example, '1,1,1\n4,4,4\n9,9,9' represents a 3x3 table.
+1,1,1
+4,4,4
+9,9,9
 
 The function should parse the string as rows and columns and compute the sum of the values for each row. Return an array with the sum of the values in each row.
 
 For example, excel('1,1,1\n4,4,4\n9,9,9') returns [3, 12, 27].
 ------------------------------------------------------------------------------------------------ */
 
-const excel = (str) => str.split('\n').reduce((totals, row) => totals.concat(row.split(',').reduce((total, current) => total + Number(current), 0)), []);
-
+const excel = (csv) => csv.split('\n').map(line => line.split(',').reduce((sum, curr) => sum + Number(curr), 0));
 /* ------------------------------------------------------------------------------------------------
 TESTS
 

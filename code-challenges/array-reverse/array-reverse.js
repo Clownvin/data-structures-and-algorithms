@@ -9,4 +9,3 @@ module.exports = function reverseArray(array) {
   }
   return array;
 }
-

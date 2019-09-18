@@ -94,13 +94,14 @@ If two people have the same full name, the younger one should come first. Do not
 ------------------------------------------------------------------------------------------------ */
 
 const compare = (a, b, ...comparisons) => {
-  for (let i = 0; i < comparisons.length - 1; i++) {
+  const end = comparisons.length - 1;
+  for (let i = 0; i < end; i++) {
     let result = comparisons[i](a, b);
     if (result) {
       return result;
     }
   }
-  return comparisons[comparisons.length - 1](a, b);
+  return comparisons[end](a, b);
 };
 
 const sortPeopleBetter = (arr) => arr.sort((a, b) => compare(a, b, 

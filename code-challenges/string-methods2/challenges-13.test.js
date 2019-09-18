@@ -28,7 +28,11 @@ Write a function named standardizePhoneNumbers that takes in an array of phone n
 For example, (123) 456-7890 returns 1234567890
 ------------------------------------------------------------------------------------------------ */
 
-const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(')', '').replace('(', '').replace(' ', '').replace('-', ''));
+//const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(')', '').replace('(', '').replace(' ', '').replace('-', ''));
+
+const standardizePhoneNumbers = (arr) => arr.map(phoneNumber => phoneNumber.replace(/[()\-\s]/g, ''));
+
+
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
@@ -45,8 +49,22 @@ CHALLENGE 5
 
 Write a function named allHappy that takes in an array of strings and returns a Boolean indicating whether all those strings contain ":)".
 ------------------------------------------------------------------------------------------------ */
+/*function includesSmily(string) {
+  return string.includes(':)');
+}
 
-const allHappy = (arr) => arr.filter(string => string.includes(':)')).length === arr.length;
+function every(arr, callback) {
+  for (const string of arr) {
+    if (!callback(string)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+const allHappy = (arr) => every(arr, includesSmily);*/
+
+const allHappy = (arr) => arr.every((string) => string.includes(':)'));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 6
@@ -62,7 +80,7 @@ CHALLENGE 7
 Write a function named findEvery that takes in an array of strings, along with a target string. Return a Boolean based on whether or not every string in the array contains the target string.
 ------------------------------------------------------------------------------------------------ */
 
-const findEvery = (arr, target) => arr.filter(string => string.includes(target)).length === arr.length;
+const findEvery = (arr, target) => arr.every(string => string.includes(target));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 8
@@ -101,7 +119,7 @@ For example, ['Tuesday', 'Monday', 'Wednesday and Thursday', 'Tuesday 2', 'Thurs
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-const sortByDay = (arr) => daysOfWeek.map(day => arr.reduce((events, event) => event.includes(day) ? events.concat(event) : events, []));;
+const sortByDay = (arr) => daysOfWeek.map(day => arr.reduce((events, event) => event.includes(day) ? events.concat(event) : events, []));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 10 - Stretch Goal

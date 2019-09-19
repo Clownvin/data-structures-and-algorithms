@@ -34,6 +34,6 @@ function recursiveBinarySearch(arr, key, start, end) {
   } else {
     return recursiveBinarySearch(arr, key, start, index - 1);
   }
-};
+}
 
 module.exports = exports = { binarySearch, recursiveBinarySearch };

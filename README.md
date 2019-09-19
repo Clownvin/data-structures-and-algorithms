@@ -1,6 +1,6 @@
-#Data Structures and Algorithms
+## Data Structures and Algorithms
 Simply a collection of "coding-challenges" assigned in 301-401
-##Code-Challenges:
+## Code-Challenges:
 * [All-Methods](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/all-methods)
 * [Array-Binary-Search](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/array-binary-search)
 * [Array-Reverse](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/array-reverse)

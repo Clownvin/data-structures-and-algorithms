@@ -5,7 +5,7 @@ const { binarySearch, recursiveBinarySearch } = require('../binary-search');
 const arrays = [];
 
 for (let i = 0; i < 10; i++) {
-  const arr = []
+  const arr = [];
   for (let j = 0; j < i; j++) {
     arr[j] = j + 1;
   }

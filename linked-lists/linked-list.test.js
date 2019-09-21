@@ -4,7 +4,6 @@ describe('LinkedList', () => {
   const LinkedList = require('./linked-list');
   const list = new LinkedList();
   function repopulate(amount) {
-    
     while (amount--) {
       list.add(amount);
     }

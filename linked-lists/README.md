@@ -8,14 +8,14 @@ Make a linked list.
 I made a linked list. I named my "Node" class "Link", as I think that's more intuitive for a linked list. You don't called it a Noded list, do you?
 
 The time complexity for most operations is as follows:
-add: O(1)
-remove (from head or tail): O(1)
-remove (from inside): O(n)
-insert (at head or tail): O(1)
-insert (inside): O(n)
-set (tail or head): O(1)
-set (inside): O(n)
-get: O(n)
+* add: O(1)
+* remove (from head or tail): O(1)
+* remove (from inside): O(n)
+* insert (at head or tail): O(1)
+* insert (inside): O(n)
+* set (tail or head): O(1)
+* set (inside): O(n)
+* get: O(n)
 
 ## API
 ### getSize()
@@ -56,15 +56,15 @@ Make a doubly linked list.
 I made a doubly linked list. I named my "Node" class "Link", as I think that's more intuitive for a linked list. You don't called it a Noded list, do you?
 
 The time complexity for most operations is as follows:
-add: O(1)
-remove (best case): O(1)
-remove (worst case): O(n/2)
-insert (best case): O(1)
-insert (worst case): O(n/2)
-set (best case): O(1)
-set (worst case): O(n/2)
-get (best case): O(1)
-get (worst case): O(n/2)
+* add: O(1)
+* remove (best case): O(1)
+* remove (worst case): O(n/2)
+* insert (best case): O(1)
+* insert (worst case): O(n/2)
+* set (best case): O(1)
+* set (worst case): O(n/2)
+* get (best case): O(1)
+* get (worst case): O(n/2)
 
 ## API
 ### getSize()

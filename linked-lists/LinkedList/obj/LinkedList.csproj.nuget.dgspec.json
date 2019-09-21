@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/clownvin/git/js-playground/LinkedList/LinkedList.csproj": {}
+  },
+  "projects": {
+    "/home/clownvin/git/js-playground/LinkedList/LinkedList.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/clownvin/git/js-playground/LinkedList/LinkedList.csproj",
+        "projectName": "LinkedList",
+        "projectPath": "/home/clownvin/git/js-playground/LinkedList/LinkedList.csproj",
+        "packagesPath": "/home/clownvin/.nuget/packages/",
+        "outputPath": "/home/clownvin/git/js-playground/LinkedList/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/clownvin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

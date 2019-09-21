@@ -1,0 +1,11 @@
+/home/clownvin/git/js-playground/LinkedList/bin/Debug/netcoreapp2.2/LinkedList.deps.json
+/home/clownvin/git/js-playground/LinkedList/bin/Debug/netcoreapp2.2/LinkedList.runtimeconfig.json
+/home/clownvin/git/js-playground/LinkedList/bin/Debug/netcoreapp2.2/LinkedList.runtimeconfig.dev.json
+/home/clownvin/git/js-playground/LinkedList/bin/Debug/netcoreapp2.2/LinkedList.dll
+/home/clownvin/git/js-playground/LinkedList/bin/Debug/netcoreapp2.2/LinkedList.pdb
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.csprojAssemblyReference.cache
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.csproj.CoreCompileInputs.cache
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.AssemblyInfoInputs.cache
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.AssemblyInfo.cs
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.dll
+/home/clownvin/git/js-playground/LinkedList/obj/Debug/netcoreapp2.2/LinkedList.pdb

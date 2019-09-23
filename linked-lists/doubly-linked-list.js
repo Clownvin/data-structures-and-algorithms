@@ -167,6 +167,62 @@ module.exports = exports = class DoublyLinkedList {
     link.value = value;
   }
 
+  insertBefore(value, newValue) {
+    if (this.head === null) {
+      this.add(value);
+      return;
+    }
+    let i = 0;
+    let prev = null;
+    let link = this.head;
+    while (i < this.getSize() && link.value !== value) {
+      prev = link;
+      link = link.next;
+      i++;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link;
+    link.prev = newLink;
+    if (prev) {
+      prev.next = newLink;
+      newLink.previous = prev;
+    }
+    if (link === this.head) {
+      this.head = newLink;
+    }
+    this.size++;
+  }
+
+  insertAfter(value, newValue) {
+    if (this.head === null) {
+      this.add(value);
+      return;
+    }
+    let i = 0;
+    let link = this.head;
+    while (i < this.getSize() && link.value !== value) {
+      link = link.next;
+      i++;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link.next;
+    newLink.previous = link;
+    link.next = newLink;
+    if (newLink.next) {
+      newLink.next.previous = newLink;
+    }
+    if (link === this.tail) {
+      this.tail === newLink;
+    }
+    this.size++;
+  }
+
   remove(index = this.getSize() - 1) {
     rangeCheck(index, this.size);
     let toReturn;

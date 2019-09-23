@@ -23,9 +23,7 @@ function getLink(index, head) {
 
 module.exports = exports = class LinkedList {
   constructor() {
-    this.head = null;
-    this.tail = null;
-    this.size = 0;
+    this.clear();
   }
 
   getSize() {
@@ -47,6 +45,10 @@ module.exports = exports = class LinkedList {
     this.size++;
   }
 
+  append(value) {
+    this.add(value);
+  }
+
   clear() {
     this.size = 0;
     this.head = null;
@@ -66,9 +68,9 @@ module.exports = exports = class LinkedList {
         return {
           done: curr === null,
           value: value
-        }
+        };
       }
-    }
+    };
   }
 
   forEach(callback) {
@@ -140,6 +142,44 @@ module.exports = exports = class LinkedList {
       let start = getLink(index - 1, this.head);
       let next = start.next;
       start.next = new Link(value, next);
+    }
+    this.size++;
+  }
+
+  insertBefore(value, newValue) {
+    let prev = null;
+    let link = this.head;
+    while (link !== this.tail && link.value !== value) {
+      prev = link;
+      link = link.next;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link;
+    if (prev) {
+      prev.next = newLink;
+    }
+    if (link === this.head) {
+      this.head = newLink;
+    }
+    this.size++;
+  }
+
+  insertAfter(value, newValue) {
+    let link = this.head;
+    while (link !== this.tail && link.value !== value) { // 1 2 3
+      link = link.next;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link.next;
+    link.next = newLink;
+    if (link === this.tail) {
+      this.tail === newLink;
     }
     this.size++;
   }

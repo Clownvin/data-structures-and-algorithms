@@ -1,318 +1,154 @@
 'use-strict';
+const LinkedList = require('./linked-list');
+const DoublyLinkedList = require('./doubly-linked-list');
 
-describe('LinkedList', () => {
-  const LinkedList = require('./linked-list');
-  const list = new LinkedList();
-  function repopulate(amount) {
-    while (amount--) {
-      list.add(amount);
-    }
+function addToList(list, amount = 10) {
+  for (let i = 0; i < amount; i++) {
+    list.add(i);
   }
+}
 
-  it('Should add to tail', () => {
-    for (let i = 0; i < 10; i++) {
-      list.add(i);
-      expect(list.getSize()).toBe(i + 1);
-      expect(list.get(i)).toBe(i);
-    }
+function listTest(List) {
+  let list;
+
+  beforeEach(() => {
+    list = new List();
   });
 
-  it('Should remove without parameter from tail', () => {
-    while (list.getSize()) {
-      const startSize = list.getSize();
-      const toRemove = list.get(startSize - 1);
-      const removed = list.remove();
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
+  describe(List.name, () => {
+    it('Should be empty after creation', () => {
+      expect(list.getSize()).toBe(0);
+    });
+  
+    it('List.add()/append() should add to tail', () => {
+      list.add(1);
+      expect(list.getSize()).toBe(1);
+      expect(list.get(0)).toBe(1);
+      list.add(2);
+      expect(list.getSize()).toBe(2);
+      expect(list.get(1)).toBe(2);
+      list.add(3);
+      expect(list.getSize()).toBe(3);
+      expect(list.get(2)).toBe(3);
+    });
 
-  it('Should be able to remove from head till empty', () => {
-    repopulate(1000);
-    for (let i = 0; i < 1000; i++) {
-      const startSize = list.getSize();
-      const toRemove = list.get(0);
-      const removed = list.remove(0);
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
+    it('List.remove() should remove from tail', () => {
+      addToList(list, 1);
+      expect(list.toString()).toBe('[0]');
+      expect(list.remove()).toBe(0);
+      expect(list.getSize()).toBe(0);
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      expect(list.getSize()).toBe(10);
+      expect(list.remove()).toBe(9);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8]');
+      expect(list.getSize()).toBe(9);
+    });
 
-  it('Should be able to remove from tail till empty', () => {
-    repopulate(1000);
-    for (let i = 0; i < 1000; i++) {
-      const startSize = list.getSize();
-      const toRemove = list.get(list.getSize() - 1);
-      const removed = list.remove(list.getSize() - 1);
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
+    it('List.remove(0) should remove from head', () => {
+      addToList(list, 1);
+      expect(list.toString()).toBe('[0]');
+      expect(list.remove(0)).toBe(0);
+      expect(list.getSize()).toBe(0);
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      expect(list.getSize()).toBe(10);
+      expect(list.remove(0)).toBe(0);
+      expect(list.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      expect(list.getSize()).toBe(9);
+    });
 
-  it('Should be able to remove randomly to empty', () => {
-    for (let i = 0; i < 1000; i++) {
-      repopulate(3);
-      while (list.getSize()) {
-        const removeIndex = Math.floor(Math.random() * list.getSize());
-        const startSize = list.getSize();
-        const toRemove = list.get(removeIndex);
-        const removed = list.remove(removeIndex);
-        expect(list.getSize()).toBe(startSize - 1);
-        expect(toRemove).toBe(removed);
+    it('List.insert() should add at the head', () => {
+      list.insert(0);
+      expect(list.toString()).toBe('[0]');
+      list.insert(1);
+      expect(list.toString()).toBe('[1, 0]');
+    });
+
+    it('List.insert(val, size) should add at the tail', () => {
+      list.insert(1, list.getSize());
+      expect(list.toString()).toBe('[1]');
+      list.insert(2, list.getSize());
+      expect(list.toString()).toBe('[1, 2]');
+    });
+
+    it('List.toString() returns [n1, n2, n3...n4]', () => {
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+    });
+
+    it('List.includes() returns true for values that exist, false otherwise', () => {
+      addToList(list);
+      expect(list.includes(0)).toBe(true);
+      expect(list.includes(-1)).toBe(false);
+      expect(list.includes(9)).toBe(true);
+      expect(list.includes(10)).toBe(false);
+    });
+
+    it('Should be iterable', () => {
+      addToList(list);
+      let joined = '';
+      for(const num of list) {
+        joined += num;
       }
-    }
-  });
-
-  it('Should be able to insert elements to head', () => {
-    expect(list.getSize()).toBe(0);
-    for (let i = 0; i < 1000; i++) {
-      const toInsert = Math.floor(Math.random() * 1000000);
-      const startSize = list.getSize();
-      let initially;
-      if (list.getSize() > 0) {
-        initially = list.get(0);
-      }
-      list.insert(toInsert);
-      expect(list.getSize()).toBe(startSize + 1);
-      expect(list.get(0)).toBe(toInsert);
-      if (list.getSize() > 1) {
-        expect(list.get(1)).toBe(initially);
-      }
-    }
-    list.clear();
-  });
-
-  it('Should be able to insert elements to tail', () => {
-    expect(list.getSize()).toBe(0);
-    for (let i = 0; i < 1000; i++) {
-      const toInsert = Math.floor(Math.random() * 1000000);
-      const startSize = list.getSize();
-      let initially;
-      if (list.getSize() > 0) {
-        initially = list.get(startSize - 1);
-      }
-      list.insert(toInsert, startSize);
-      expect(list.getSize()).toBe(startSize + 1);
-      expect(list.get(startSize)).toBe(toInsert);
-      if (list.getSize() > 1) {
-        expect(list.get(startSize - 1)).toBe(initially);
-      }
-    }
-    list.clear();
-  });
-
-  it('Should be iterable', () => {
-    list.clear();
-    repopulate(10);
-    let joined = '';
-    for(const num of list) {
-      joined += num;
-    }
-    expect(joined).toBe('9876543210');
-  });
-
-  it('Should support toString', () => {
-    list.clear();
-    repopulate(10);
-    const string = list.toString();
-    expect(string).toBe('[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]');
-  });
-
-  it('Should support \'includes\' method', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.includes(0)).toBe(true);
-    expect(list.includes(-1)).toBe(false);
-    expect(list.includes(9)).toBe(true);
-    expect(list.includes(10)).toBe(false);
-  });
-
-  it('Should support map', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.map((value) => value * 2).toString()).toBe('[18, 16, 14, 12, 10, 8, 6, 4, 2, 0]');
-  });
-
-  it('Should support forEach', () => {
-    list.clear();
-    repopulate(10);
-    list.forEach((value, index) => {
-      expect(value).toBe(list.get(index));
+      expect(joined).toBe('0123456789');
+    });
+  
+    it('Should support toString', () => {
+      addToList(list);
+      const string = list.toString();
+      expect(string).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+    });
+  
+    it('Should support \'includes\' method', () => {
+      addToList(list);
+      expect(list.includes(0)).toBe(true);
+      expect(list.includes(-1)).toBe(false);
+      expect(list.includes(9)).toBe(true);
+      expect(list.includes(10)).toBe(false);
+    });
+  
+    it('Should support map', () => {
+      addToList(list);
+      expect(list.map((value) => value * 2).toString()).toBe('[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]');
+    });
+  
+    it('Should support forEach', () => {
+      addToList(list);
+      list.forEach((value, index) => {
+        expect(value).toBe(list.get(index));
+      });
+    });
+    //filter reduce
+    it('Should support filter', () => {
+      addToList(list);
+      expect(list.filter((value) => value % 2).toString()).toBe('[1, 3, 5, 7, 9]');
+    });
+  
+    it('Should support reduce', () => {
+      addToList(list);
+      expect(list.reduce((total, currVal) => total + currVal)).toBe(45);
+      expect(list.reduce((total, currVal) => total + currVal, 0)).toBe(45);
+    });
+  
+    it('Should support insertBefore', () => {
+      addToList(list);
+      console.log(list.toString());
+      list.insertBefore(4, 5);
+      list.insertBefore(9, 10);
+      list.insertBefore(0, 1);
+      expect(list.toString()).toBe('[1, 0, 1, 2, 3, 5, 4, 5, 6, 7, 8, 10, 9]');
+    });
+  
+    it('Should support insertAfter', () => {
+      addToList(list);
+      list.insertAfter(5, 4);
+      list.insertAfter(9, 8);
+      list.insertAfter(0, -1);
+      expect(list.toString()).toBe('[0, -1, 1, 2, 3, 4, 5, 4, 6, 7, 8, 9, 8]');
     });
   });
-  //filter reduce
-  it('Should support filter', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.filter((value) => value % 2).toString()).toBe('[9, 7, 5, 3, 1]');
-  });
+}
 
-  it('Should support reduce', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.reduce((total, currVal) => total + currVal)).toBe(45);
-    expect(list.reduce((total, currVal) => total + currVal, 0)).toBe(45);
-  });
-});
-
-
-describe('DoublyLinkedList', () => {
-  const DoublyLinkedList = require('./doubly-linked-list');
-  const list = new DoublyLinkedList();
-  function repopulate(amount) {
-    while (amount--) {
-      list.add(amount);
-    }
-  }
-
-  it('Should add to tail', () => {
-    for (let i = 0; i < 10; i++) {
-      list.add(i);
-      expect(list.getSize()).toBe(i + 1);
-      expect(list.get(i)).toBe(i);
-    }
-  });
-
-  it('Should remove without parameter from tail', () => {
-    while (list.getSize()) {
-      const startSize = list.getSize();
-      const toRemove = list.get(startSize - 1);
-      const removed = list.remove();
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
-
-  it('Should be able to remove from head till empty', () => {
-    repopulate(1000);
-    for (let i = 0; i < 1000; i++) {
-      const startSize = list.getSize();
-      const toRemove = list.get(0);
-      const removed = list.remove(0);
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
-
-  it('Should be able to remove from tail till empty', () => {
-    repopulate(1000);
-    for (let i = 0; i < 1000; i++) {
-      const startSize = list.getSize();
-      const toRemove = list.get(list.getSize() - 1);
-      const removed = list.remove(list.getSize() - 1);
-      expect(list.getSize()).toBe(startSize - 1);
-      expect(toRemove).toBe(removed);
-    }
-    expect(list.getSize()).toBe(0);
-  });
-
-  it('Should be able to remove randomly to empty', () => {
-    for (let i = 0; i < 1000; i++) {
-      repopulate(3);
-      while (list.getSize()) {
-        const removeIndex = Math.floor(Math.random() * list.getSize());
-        const startSize = list.getSize();
-        const toRemove = list.get(removeIndex);
-        const removed = list.remove(removeIndex);
-        expect(list.getSize()).toBe(startSize - 1);
-        expect(toRemove).toBe(removed);
-      }
-    }
-  });
-
-  it('Should be able to insert elements to head', () => {
-    expect(list.getSize()).toBe(0);
-    for (let i = 0; i < 1000; i++) {
-      const toInsert = Math.floor(Math.random() * 1000000);
-      const startSize = list.getSize();
-      let initially;
-      if (list.getSize() > 0) {
-        initially = list.get(0);
-      }
-      list.insert(toInsert);
-      expect(list.getSize()).toBe(startSize + 1);
-      expect(list.get(0)).toBe(toInsert);
-      if (list.getSize() > 1) {
-        expect(list.get(1)).toBe(initially);
-      }
-    }
-    list.clear();
-  });
-
-  it('Should be able to insert elements to tail', () => {
-    expect(list.getSize()).toBe(0);
-    for (let i = 0; i < 1000; i++) {
-      const toInsert = Math.floor(Math.random() * 1000000);
-      const startSize = list.getSize();
-      let initially;
-      if (list.getSize() > 0) {
-        initially = list.get(startSize - 1);
-      }
-      list.insert(toInsert, startSize);
-      expect(list.getSize()).toBe(startSize + 1);
-      expect(list.get(startSize)).toBe(toInsert);
-      if (list.getSize() > 1) {
-        expect(list.get(startSize - 1)).toBe(initially);
-      }
-    }
-    list.clear();
-  });
-
-  it('Should be iterable', () => {
-    list.clear();
-    repopulate(10);
-    let joined = '';
-    for(const num of list) {
-      joined += num;
-    }
-    expect(joined).toBe('9876543210');
-  });
-
-  it('Should support toString', () => {
-    list.clear();
-    repopulate(10);
-    const string = list.toString();
-    expect(string).toBe('[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]');
-  });
-
-  it('Should support \'includes\' method', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.includes(0)).toBe(true);
-    expect(list.includes(-1)).toBe(false);
-    expect(list.includes(9)).toBe(true);
-    expect(list.includes(10)).toBe(false);
-  });
-
-  it('Should support map', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.map((value) => value * 2).toString()).toBe('[18, 16, 14, 12, 10, 8, 6, 4, 2, 0]');
-  });
-
-  it('Should support forEach', () => {
-    list.clear();
-    repopulate(10);
-    list.forEach((value, index) => {
-      expect(value).toBe(list.get(index));
-    });
-  });
-  //filter reduce
-  it('Should support filter', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.filter((value) => value % 2).toString()).toBe('[9, 7, 5, 3, 1]');
-  });
-
-  it('Should support reduce', () => {
-    list.clear();
-    repopulate(10);
-    expect(list.reduce((total, currVal) => total + currVal)).toBe(45);
-    expect(list.reduce((total, currVal) => total + currVal, 0)).toBe(45);
-  });
-});
+listTest(LinkedList);
+listTest(DoublyLinkedList);

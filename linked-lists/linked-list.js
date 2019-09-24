@@ -11,7 +11,7 @@ class Link {
 
 function rangeCheck(index, size) {
   if (size <= index || index < 0) {
-    throw `Array index out of bounds: ${index}`;
+    throw new Error(`Array index out of bounds: ${index}`);
   }
 }
 
@@ -72,7 +72,7 @@ module.exports = exports = class LinkedList {
 
   static of(...values) {
     const list = new LinkedList();
-    list.add(values);
+    list.add(...values);
     return list;
   }
 
@@ -112,7 +112,7 @@ module.exports = exports = class LinkedList {
   copyWithin(target, start = 0, end = this.getSize()) {
     target = normalizeAndCheck(target, this.getSize());
     start = normalizeAndCheck(start, this.getSize());
-    end = normalizeAndCheck(end, this.getSize());
+    end = normalizeAndCheck(end, this.getSize() + 1);
     let values = [];
     let i = 0;
     for (const value of this) {
@@ -123,11 +123,12 @@ module.exports = exports = class LinkedList {
     }
     let link = this.head;
     i = 0;
-    while (link !== null && i < end) { // 1 2 3
+    while (link !== null && i - target < values.length) { // 1 2 3
       if (i >= target) {
         link.value = values[i - target];
       }
       link = link.next;
+      i++;
     }
     return this;
   }
@@ -152,7 +153,7 @@ module.exports = exports = class LinkedList {
   }
 
   push(...values) {
-    return this.add(values);
+    return this.add(...values);
   }
 
   clear() {
@@ -181,7 +182,7 @@ module.exports = exports = class LinkedList {
 
   fill(value, start = 0, end = this.getSize()) {
     start = normalizeAndCheck(start, this.getSize());
-    end = normalizeAndCheck(start, this.getSize());
+    end = normalizeAndCheck(end, this.getSize() + 1);
     let i = 0;
     let link = this.head;
     while (link !== null && i < end) {
@@ -209,9 +210,10 @@ module.exports = exports = class LinkedList {
   findIndex(callback, thisArg) {
     let i = 0;
     for (const value of this) {
-      if (callback.call(thisArg, value, i++, this)) {
+      if (callback.call(thisArg, value, i, this)) {
         return i;
       }
+      i++;
     }
     return -1;
   }
@@ -289,9 +291,9 @@ module.exports = exports = class LinkedList {
     return this;
   }
 
-  slice(start, end = this.getSize()) {
+  slice(start = 0, end = this.getSize()) {
     start = normalizeAndCheck(start, this.getSize());
-    end = normalizeIndex(end, this.getSize());
+    end = normalizeIndex(end, this.getSize() + 1);
     rangeCheck(end, this.getSize() + 1);
     const list = new LinkedList();
     let i = 0;
@@ -328,27 +330,8 @@ module.exports = exports = class LinkedList {
     return this;
   }
 
-  //TODO optimize
-  splice(start, deleteCount, ...newValues) {
-    if (deleteCount < 0) {
-      throw `Delete count cannot be negative: ${deleteCount}`;
-    }
-    const toStart = this.slice(0, start);
-    const deleted = deleteCount ? this.slice(start, start + deleteCount) : [];
-    const end = this.slice(start + deleteCount);
-    let values;
-    if (newValues) {
-      values = toStart.concat(newValues).concat(end);
-    } else {
-      values = toStart.concat(end);
-    }
-    this.clear();
-    this.add(...values);
-    return deleted.toArray();
-  }
-
   join(separator = ',') {
-    return this.reduce((string, value, index) => index < 1 ? string.toString() : `${string}${separator}${value.toString()}`, this.head.value);
+    return this.reduce((string, value, index) => index < 1 ? string.toString() : `${string}${separator}${value.toString()}`, this.head ? this.head.value : '');
   }
 
   toString() {
@@ -396,11 +379,7 @@ module.exports = exports = class LinkedList {
   }
 
   insert(value, index = 0) {
-    if (index === this.getSize()) {
-      this.add(value);
-      return;
-    }
-    index = normalizeAndCheck(index, this.getSize());
+    index = normalizeAndCheck(index, this.getSize() + 1);
     if (index === 0) {
       let currHead = this.head;
       this.head = new Link(value, currHead);
@@ -414,7 +393,7 @@ module.exports = exports = class LinkedList {
   }
 
   unshift(...values) {
-    for (let i = values.length; i >= 0; i--) {
+    for (let i = values.length - 1; i >= 0; i--) {
       this.insert(values[i]);
     }
     return this;
@@ -428,7 +407,7 @@ module.exports = exports = class LinkedList {
       prev = link;
       link = link.next;
     }
-    if (link.value !== value) {
+    if (!link || link.value !== value) {
       throw `No element exists with value: ${value}`;
     }
     const newLink = new Link(newValue);
@@ -453,7 +432,7 @@ module.exports = exports = class LinkedList {
     while (link !== this.tail && link.value !== value) { // 1 2 3
       link = link.next;
     }
-    if (link.value !== value) {
+    if (!link || link.value !== value) {
       throw `No element exists with value: ${value}`;
     }
     const newLink = new Link(newValue);
@@ -480,7 +459,7 @@ module.exports = exports = class LinkedList {
       prev = link;
       link = link.next;
     }
-    if (link.value !== value) {
+    if (!link || link.value !== value) {
       throw `No element exists with value: ${value}`;
     }
     if (prev !== null) {
@@ -540,5 +519,16 @@ module.exports = exports = class LinkedList {
 
   values() {
     return this.toArray();
+  }
+
+  kthFromEnd(k) {
+    const index = (this.getSize() - k) - 1;
+    rangeCheck(index, this.getSize());
+    return getLink(index, this.head).value;
+  }
+
+  middleValue() {
+    let index = this.getSize() % 2 === 0 ? Math.floor(this.getSize() / 2) - 1 : Math.floor(this.getSize() / 2);
+    return getLink(index, this.head).value;
   }
 };

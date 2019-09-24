@@ -4,6 +4,14 @@ class Link {
     this.next = next;
     this.previous = previous;
   }
+
+  toString() {
+    return this.value.toString();
+  }
+
+  toLocaleString() {
+    return this.value.toLocaleString();
+  }
 }
 
 function rangeCheck(index, size) {
@@ -33,7 +41,7 @@ module.exports = exports = class DoublyLinkedList {
         link = link.next;
         i++;
       }
-    // It's in the second half of list
+      // It's in the second half of list
     } else {
       let i = this.size - 1;
       link = this.tail;
@@ -51,16 +59,22 @@ module.exports = exports = class DoublyLinkedList {
     return link.value;
   }
 
-  add(value) {
-    const link = new Link(value);
-    if (this.head === null) {
-      this.head = this.tail = link;
-    } else {
-      this.tail.next = link;
-      link.previous = this.tail;
-      this.tail = link;
+  add(...values) {
+    for (const value of values) {
+      const link = new Link(value);
+      if (this.head === null) {
+        this.head = this.tail = link;
+      } else {
+        this.tail.next = link;
+        link.previous = this.tail;
+        this.tail = link;
+      }
     }
-    this.size++;
+    this.size += values.length;
+  }
+
+  append(...values) {
+    return this.add(...values);
   }
 
   clear() {
@@ -132,7 +146,7 @@ module.exports = exports = class DoublyLinkedList {
   }
 
   toString() {
-    return `[${this.reduce((string, val) => `${string}, ${val}`, this.get(0).value)}]`;
+    return `[${this.reduce((string, val) => `${string.toString()}, ${val.toString()}`)}]`;
   }
 
   includes(object) {
@@ -168,17 +182,11 @@ module.exports = exports = class DoublyLinkedList {
   }
 
   insertBefore(value, newValue) {
-    if (this.head === null) {
-      this.add(value);
-      return;
-    }
-    let i = 0;
     let prev = null;
     let link = this.head;
-    while (i < this.getSize() && link.value !== value) {
+    while (link !== this.tail && link.value !== value) {
       prev = link;
       link = link.next;
-      i++;
     }
     if (link.value !== value) {
       throw `No element exists with value: ${value}`;
@@ -197,15 +205,9 @@ module.exports = exports = class DoublyLinkedList {
   }
 
   insertAfter(value, newValue) {
-    if (this.head === null) {
-      this.add(value);
-      return;
-    }
-    let i = 0;
     let link = this.head;
-    while (i < this.getSize() && link.value !== value) {
+    while (link !== this.tail && link.value !== value) {
       link = link.next;
-      i++;
     }
     if (link.value !== value) {
       throw `No element exists with value: ${value}`;

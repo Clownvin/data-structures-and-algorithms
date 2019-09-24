@@ -16,11 +16,11 @@ function listTest(List) {
   });
 
   describe(List.name, () => {
-    it('Should be empty after creation', () => {
+    it(`${List.name} should be empty after creation`, () => {
       expect(list.getSize()).toBe(0);
     });
-  
-    it('List.add()/append() should add to tail', () => {
+
+    it('add/append/push should add to tail', () => {
       list.add(1);
       expect(list.getSize()).toBe(1);
       expect(list.get(0)).toBe(1);
@@ -32,8 +32,9 @@ function listTest(List) {
       expect(list.get(2)).toBe(3);
     });
 
-    it('List.remove() should remove from tail', () => {
+    it('remove/pop should remove from tail', () => {
       addToList(list, 1);
+      expect(list.getSize()).toBe(1);
       expect(list.toString()).toBe('[0]');
       expect(list.remove()).toBe(0);
       expect(list.getSize()).toBe(0);
@@ -45,7 +46,7 @@ function listTest(List) {
       expect(list.getSize()).toBe(9);
     });
 
-    it('List.remove(0) should remove from head', () => {
+    it('remove with (0) or shift should remove from head', () => {
       addToList(list, 1);
       expect(list.toString()).toBe('[0]');
       expect(list.remove(0)).toBe(0);
@@ -58,26 +59,26 @@ function listTest(List) {
       expect(list.getSize()).toBe(9);
     });
 
-    it('List.insert() should add at the head', () => {
+    it('insert/unshift should add at the head', () => {
       list.insert(0);
       expect(list.toString()).toBe('[0]');
       list.insert(1);
       expect(list.toString()).toBe('[1, 0]');
     });
 
-    it('List.insert(val, size) should add at the tail', () => {
+    it('insert with (n, getSize()) should add at the tail', () => {
       list.insert(1, list.getSize());
       expect(list.toString()).toBe('[1]');
       list.insert(2, list.getSize());
       expect(list.toString()).toBe('[1, 2]');
     });
 
-    it('List.toString() returns [n1, n2, n3...n4]', () => {
+    it('toString returns [n1, n2, n3...n4]', () => {
       addToList(list);
       expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
     });
 
-    it('List.includes() returns true for values that exist, false otherwise', () => {
+    it('includes returns true for values that exist, false otherwise', () => {
       addToList(list);
       expect(list.includes(0)).toBe(true);
       expect(list.includes(-1)).toBe(false);
@@ -85,7 +86,7 @@ function listTest(List) {
       expect(list.includes(10)).toBe(false);
     });
 
-    it('Should be iterable', () => {
+    it('[Symbol.iterator] works', () => {
       addToList(list);
       let joined = '';
       for(const num of list) {
@@ -93,26 +94,12 @@ function listTest(List) {
       }
       expect(joined).toBe('0123456789');
     });
-  
-    it('Should support toString', () => {
-      addToList(list);
-      const string = list.toString();
-      expect(string).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
-    });
-  
-    it('Should support \'includes\' method', () => {
-      addToList(list);
-      expect(list.includes(0)).toBe(true);
-      expect(list.includes(-1)).toBe(false);
-      expect(list.includes(9)).toBe(true);
-      expect(list.includes(10)).toBe(false);
-    });
-  
+
     it('Should support map', () => {
       addToList(list);
       expect(list.map((value) => value * 2).toString()).toBe('[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]');
     });
-  
+
     it('Should support forEach', () => {
       addToList(list);
       list.forEach((value, index) => {
@@ -124,28 +111,67 @@ function listTest(List) {
       addToList(list);
       expect(list.filter((value) => value % 2).toString()).toBe('[1, 3, 5, 7, 9]');
     });
-  
+
     it('Should support reduce', () => {
       addToList(list);
       expect(list.reduce((total, currVal) => total + currVal)).toBe(45);
       expect(list.reduce((total, currVal) => total + currVal, 0)).toBe(45);
     });
-  
-    it('Should support insertBefore', () => {
+
+    it('insertBefore inserts values before second value\'s first occurrence', () => {
       addToList(list);
-      console.log(list.toString());
       list.insertBefore(4, 5);
       list.insertBefore(9, 10);
       list.insertBefore(0, 1);
       expect(list.toString()).toBe('[1, 0, 1, 2, 3, 5, 4, 5, 6, 7, 8, 10, 9]');
     });
-  
-    it('Should support insertAfter', () => {
+
+    it('insertAfter inserts values after second value\'s first occurrence', () => {
       addToList(list);
       list.insertAfter(5, 4);
       list.insertAfter(9, 8);
       list.insertAfter(0, -1);
       expect(list.toString()).toBe('[0, -1, 1, 2, 3, 4, 5, 4, 6, 7, 8, 9, 8]');
+    });
+  });
+
+  describe(`${List.name}'s lame tests from README`, () => {
+    it('Can successfully add a node to the end of the linked list', () => {
+      list.append(1);
+      expect(list.toString()).toBe('[1]');
+    });
+
+    it('Can successfully add multiple nodes to the end of a linked list', () => {
+      list.append(1, 2, 3, 4, 5, 6, 7, 8, 9);
+      expect(list.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]');
+    });
+
+    it('Can successfully insert a node before a node located in the middle of a linked list', () => {
+      addToList(list, 9);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8]');
+      list.insertBefore(4, 100);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 100, 4, 5, 6, 7, 8]');
+    });
+
+    it('Can successfully insert a node before the first node of a linked list', () => {
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      list.insertBefore(0, 100);
+      expect(list.toString()).toBe('[100, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+    });
+
+    it('Can successfully insert after a node in the middle of the linked list', () => {
+      addToList(list, 9);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8]');
+      list.insertAfter(4, 100);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 100, 5, 6, 7, 8]');
+    });
+
+    it('Can successfully insert a node after the last node of the linked list', () => {
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      list.insertAfter(9, 100);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]');
     });
   });
 }

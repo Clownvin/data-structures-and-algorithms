@@ -4,6 +4,14 @@ class Link {
     this.next = next;
     this.previous = previous;
   }
+
+  toString() {
+    return this.value.toString();
+  }
+
+  toLocaleString() {
+    return this.value.toLocaleString();
+  }
 }
 
 function rangeCheck(index, size) {
@@ -33,7 +41,7 @@ module.exports = exports = class DoublyLinkedList {
         link = link.next;
         i++;
       }
-    // It's in the second half of list
+      // It's in the second half of list
     } else {
       let i = this.size - 1;
       link = this.tail;
@@ -51,16 +59,22 @@ module.exports = exports = class DoublyLinkedList {
     return link.value;
   }
 
-  add(value) {
-    const link = new Link(value);
-    if (this.head === null) {
-      this.head = this.tail = link;
-    } else {
-      this.tail.next = link;
-      link.previous = this.tail;
-      this.tail = link;
+  add(...values) {
+    for (const value of values) {
+      const link = new Link(value);
+      if (this.head === null) {
+        this.head = this.tail = link;
+      } else {
+        this.tail.next = link;
+        link.previous = this.tail;
+        this.tail = link;
+      }
     }
-    this.size++;
+    this.size += values.length;
+  }
+
+  append(...values) {
+    return this.add(...values);
   }
 
   clear() {
@@ -132,7 +146,7 @@ module.exports = exports = class DoublyLinkedList {
   }
 
   toString() {
-    return `[${this.reduce((string, val) => `${string}, ${val}`, this.get(0).value)}]`;
+    return `[${this.reduce((string, val) => `${string.toString()}, ${val.toString()}`)}]`;
   }
 
   includes(object) {
@@ -165,6 +179,50 @@ module.exports = exports = class DoublyLinkedList {
     rangeCheck(index, this.getSize());
     const link = this.getLink(index);
     link.value = value;
+  }
+
+  insertBefore(value, newValue) {
+    let prev = null;
+    let link = this.head;
+    while (link !== this.tail && link.value !== value) {
+      prev = link;
+      link = link.next;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link;
+    link.prev = newLink;
+    if (prev) {
+      prev.next = newLink;
+      newLink.previous = prev;
+    }
+    if (link === this.head) {
+      this.head = newLink;
+    }
+    this.size++;
+  }
+
+  insertAfter(value, newValue) {
+    let link = this.head;
+    while (link !== this.tail && link.value !== value) {
+      link = link.next;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    const newLink = new Link(newValue);
+    newLink.next = link.next;
+    newLink.previous = link;
+    link.next = newLink;
+    if (newLink.next) {
+      newLink.next.previous = newLink;
+    }
+    if (link === this.tail) {
+      this.tail === newLink;
+    }
+    this.size++;
   }
 
   remove(index = this.getSize() - 1) {

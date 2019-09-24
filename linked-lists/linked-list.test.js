@@ -1,12 +1,6 @@
 'use-strict';
 const LinkedList = require('./linked-list');
-const DoublyLinkedList = require('./doubly-linked-list');
-
-function addToList(list, amount = 10) {
-  for (let i = 0; i < amount; i++) {
-    list.add(i);
-  }
-}
+//const DoublyLinkedList = require('./doubly-linked-list');
 
 function listTest(List) {
   let list;

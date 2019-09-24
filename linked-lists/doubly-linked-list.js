@@ -73,6 +73,36 @@ module.exports = exports = class DoublyLinkedList {
     this.size += values.length;
   }
 
+  removeElement(value) {
+    let prev = null;
+    let link = this.head;
+    while (link !== this.tail && link.value !== value) {
+      prev = link;
+      link = link.next;
+    }
+    if (link.value !== value) {
+      throw `No element exists with value: ${value}`;
+    }
+    if (prev !== null) {
+      prev.next = link.next;
+    }
+    if (link.next !== null) {
+      link.next.previous = prev;
+    }
+    if (link === this.head) {
+      this.head = link.next;
+    }
+    if (link === this.tail) {
+      this.tail = prev;
+    }
+    this.size--;
+    return link.value;
+  }
+
+  delete(value) {
+    return this.removeElement(value);
+  }
+
   append(...values) {
     return this.add(...values);
   }
@@ -96,9 +126,9 @@ module.exports = exports = class DoublyLinkedList {
         return {
           done: curr === null,
           value: value
-        }
+        };
       }
-    }
+    };
   }
 
   forEach(callback) {

@@ -173,6 +173,17 @@ function listTest(List) {
       list.insertAfter(9, 100);
       expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100]');
     });
+
+    it('Can successfully remove an element when given the value', () => {
+      addToList(list);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]');
+      list.delete(5);
+      expect(list.toString()).toBe('[0, 1, 2, 3, 4, 6, 7, 8, 9]');
+      list.delete(0);
+      expect(list.toString()).toBe('[1, 2, 3, 4, 6, 7, 8, 9]');
+      list.delete(9);
+      expect(list.toString()).toBe('[1, 2, 3, 4, 6, 7, 8]');
+    });
   });
 }
 

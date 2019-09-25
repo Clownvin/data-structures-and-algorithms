@@ -1,5 +1,5 @@
 function mergeLists(list1, list2) {
-  let list = null;
+  let list = list1;
   let size = 0;
 
   let listCurr = null;
@@ -29,15 +29,6 @@ function mergeLists(list1, list2) {
       size++;
       curr2 = curr2.next;
     }
-  }
-  if (list === null) {
-    if (list1) {
-      return list1;
-    }
-    if (list2) {
-      return list2;
-    }
-    return null;
   }
   list.size = size;
   list.tail = listCurr;

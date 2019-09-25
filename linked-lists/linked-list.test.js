@@ -662,13 +662,13 @@ function listTest(List) {
     describe('kthFromEnd(k)', () => {
       it('Will return the kth value from the end', () => {
         list.add(1, 2, 3, 4, 5);
-        expect(list.kthFromEnd(0)).toBe(5);
-        expect(list.kthFromEnd(1)).toBe(4);
+        expect(list.nthFromEndRec(0)).toBe(5);
+        expect(list.nthFromEndRec(1)).toBe(4);
       });
       it('Will throw an error if the kth index would be out of bounds', () => {
         list.add(1, 2, 3, 4, 5);
-        expect(() => list.kthFromEnd(-1)).toThrow();
-        expect(() => list.kthFromEnd(5)).toThrow();
+        expect(() => list.nthFromEndRec(-1)).toThrow();
+        expect(() => list.nthFromEndRec(5)).toThrow();
       });
     });
 
@@ -685,6 +685,24 @@ function listTest(List) {
 
       it('Will throw an error if the list is empty', () => {
         expect(() => list.middleValue()).toThrow();
+      });
+    });
+
+    describe('mergeLists', () => {
+      it('Will merge two lists together, like a zipper', () => {
+        list.add(1, 3, 5, 7, 9);
+        const list2 = new List(2, 4, 6, 8, 10);
+        const merged = List.mergeLists(list, list2);
+        expect(merged.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]');
+      });
+
+      it('Will correctly merge lists of differing sizes', () => {
+        list.add(1, 3, 5, 6, 7, 8, 9);
+        const list2 = new List(2, 4);
+        let merged = List.mergeLists(list, list2);
+        expect(merged.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9]');
+        merged = List.mergeLists(list2, list);
+        expect(merged.toString()).toBe('[2, 1, 4, 3, 5, 6, 7, 8, 9]');
       });
     });
   });

@@ -49,8 +49,9 @@ function getLinkArray(list) {
 }
 
 module.exports = exports = class LinkedList {
-  constructor() {
+  constructor(...values) {
     this.clear();
+    this.add(...values);
   }
 
   static from(collection, mapFunc, thisArg) {
@@ -74,6 +75,23 @@ module.exports = exports = class LinkedList {
     const list = new LinkedList();
     list.add(...values);
     return list;
+  }
+
+  static mergeLists(list1, list2) {
+    let curr1 = list1.head;
+    let curr2 = list2.head;
+    const merged = new LinkedList();
+    while (curr1 !== null || curr2 !== null) {
+      if (curr1 !== null) {
+        merged.add(curr1.value);
+        curr1 = curr1.next;
+      }
+      if (curr2 !== null) {
+        merged.add(curr2.value);
+        curr2 = curr2.next;
+      }
+    }
+    return merged;
   }
 
   getSize() {
@@ -530,5 +548,29 @@ module.exports = exports = class LinkedList {
   middleValue() {
     let index = this.getSize() % 2 === 0 ? Math.floor(this.getSize() / 2) - 1 : Math.floor(this.getSize() / 2);
     return getLink(index, this.head).value;
+  }
+
+  nthFromEndRec(n, index = 0, current = this.head) {
+    if (n < 0) {
+      throw `Nth from end cannot be negative`;
+    }
+    if (current === null) {
+      return {n: n};
+    }
+    const results = this.nthFromEndRec(n, index + 1, current.next);
+    if ('val' in results) {
+      if (index === 0) {
+        return results.val;
+      }
+      return results;
+    }
+    if (results.n === 0) {
+      return {val: current.value};
+    } else {
+      if (index === 0) {
+        throw `There is no ${n} from the end in list`;
+      }
+      return {n: results.n - 1};
+    }
   }
 };

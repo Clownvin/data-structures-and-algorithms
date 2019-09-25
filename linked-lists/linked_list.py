@@ -19,9 +19,35 @@ class LinkedList:
     self.head = self.tail = None
     self.size = 0
 
-  def __rangeCheck(self, index):
-    if index < 0 or index >= self.size:
+  def __ensure_size(self, size = None):
+    if size is None:
+      size = self.size
+    return size
+
+  def __normalize_index(self, index, size = None):
+    size = self.__ensure_size(size)
+    if index < 0:
+      index = size + index
+    return index
+
+  def __range_check(self, index, size = None):
+    size = self.__ensure_size(size)
+    if index < 0 or index >= size:
       raise IndexError(f'Array index out of bounds: {str(index)}')
+  
+  def __normalize_and_check(self, index, size = None):
+    size = self.__ensure_size(size)
+    index = self.__normalize_index(index, size)
+    self.__range_check(index, size)
+    return index
+
+  def __get_link(self, index):
+    i = 0
+    link = self.head
+    while i < index:
+      link = link.next
+      i += 1
+    return link
 
   def add(self, *objects):
     for object in objects:
@@ -32,20 +58,12 @@ class LinkedList:
         self.tail.next = link
         self.tail = self.tail.next
     self.size += len(objects)
-  
-  def __getLink(self, index):
-    i = 0
-    link = self.head
-    while i < index:
-      link = link.next
-      i += 1
-    return link
 
   def getSize(self):
     return self.size
   
   def get(self, index):
-    return self.__getLink(index).value
+    return self.__get_link(index).value
 
   def clear(self):
     self.head = self.tail = None
@@ -75,31 +93,31 @@ class LinkedList:
     if index is self.size:
       self.add(object)
       return
-    self.__rangeCheck(index)
+    self.__range_check(index)
     if index is 0:
       currHead = self.head
       self.head = Link(object, currHead)
     else:
-      start = self.__getLink(index - 1)
+      start = self.__get_link(index - 1)
       next = start.next
       start.next = Link(object, next)
     self.size += 1
   
   def set(self, index, object):
-    self.__rangeCheck(index)
-    link = self.__getLink(index)
+    self.__range_check(index)
+    link = self.__get_link(index)
     link.value = object
   
   def remove(self, index = None):
     if index is None:
       index = self.getSize() - 1
-    self.__rangeCheck(index)
+    self.__range_check(index)
     toReturn = None
     if index is 0:
       toReturn = self.head.value
       self.head = self.head.next
     else:
-      start = self.__getLink(index - 1)
+      start = self.__get_link(index - 1)
       remove = start.next
       if remove is self.tail:
         start.next = None

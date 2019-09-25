@@ -18,6 +18,8 @@ Then simply return a new LinkedList created from head.
 
 This function should run in O(2n) time (O(n) if you simply returned the head, or didn't track the tail and passed in the length to LinkedList.fromHead())
 
+I don't agree with this procedure (as proposed by codefellows) since it will destroy the usability of the input lists, which is a huge problem in my opinion.
+
 ## API
 ### mergeLists(list1, list2)
 Returns a new LinkedList with the nodes of both lists, zipped together starting with list1's head, followed by list2's head.

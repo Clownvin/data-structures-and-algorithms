@@ -44,4 +44,11 @@ describe('mergeLists', () => {
     merged = mergeLists(list, list2);
     expect(merged.toString()).toBe('[1, 2, 3, 4, 5]');
   });
+  it('Will work with any amount of lists (greater than none, obviously)', () => {
+    list.add(1, 4, 7, 10, 13);
+    const list2 = new LinkedList(2, 5, 8, 11, 14);
+    const list3 = new LinkedList(3, 6, 9, 12, 15);
+    const merged = mergeLists(list, list2, list3);
+    expect(merged.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]');
+  });
 });

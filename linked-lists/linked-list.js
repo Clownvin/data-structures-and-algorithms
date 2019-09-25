@@ -67,6 +67,22 @@ module.exports = exports = class LinkedList {
     return list;
   }
 
+  static fromHead(head) {
+    const list = new LinkedList();
+    list.head = head;
+    let size = 0;
+    let prev = null;
+    let curr = head;
+    while (curr !== null) {
+      prev = curr;
+      curr = curr.next;
+      size++;
+    }
+    list.tail = prev;
+    list.size = size;
+    return list;
+  }
+
   static isList(object) {
     return object instanceof LinkedList;
   }

@@ -1,5 +1,5 @@
 const LinkedList = require('../../../linked-lists/linked-list');
-const mergeLists = require('../ll-merge');
+const { mergeLists, mergeSortedLists } = require('../ll-merge');
 
 let list;
 
@@ -50,5 +50,30 @@ describe('mergeLists', () => {
     const list3 = new LinkedList(3, 6, 9, 12, 15);
     const merged = mergeLists(list, list2, list3);
     expect(merged.toString()).toBe('[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]');
+  });
+});
+
+describe('mergeSortedLists', () => {
+  it('Will merge any number of pre-sorted lists, in sorted order', () => {
+    list.add(1, 4, 10);
+    const list2 = new LinkedList(2, 4, 5, 8, 9);
+    const list3 = new LinkedList(4, 5, 6, 7, 8);
+    const merged = mergeSortedLists(list, list2, list3);
+    expect(merged.toString()).toBe('[1, 2, 4, 4, 4, 5, 5, 6, 7, 8, 8, 9, 10]');
+  });
+  it('Will correctly handle either list being emtpy', () => {
+    list.add(1, 2, 3, 4, 5);
+    const list2 = new LinkedList();
+    let merged = mergeSortedLists(list, list2);
+    expect(merged.toString()).toBe('[1, 2, 3, 4, 5]');
+    list.clear();
+    list2.add(1, 2, 3, 4, 5);
+    merged = mergeSortedLists(list, list2);
+    expect(merged.toString()).toBe('[1, 2, 3, 4, 5]');
+  });
+  it('Will return a list with 0 size if there are no elements in either list', () => {
+    const list2 = new LinkedList();
+    let merged = mergeSortedLists(list, list2);
+    expect(merged.toString()).toBe('[]');
   });
 });

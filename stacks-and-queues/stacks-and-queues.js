@@ -2,22 +2,30 @@ const LinkedList = require('../linked-lists/linked-list');
 
 class Stack {
   constructor(...values) {
-    this.list = new LinkedList(...values);
+    this.list = new LinkedList();
+    this.list.unshift(...values);
+    //Adding a top just because codefellows says to...
+    this.top = this.list.head;
   }
   push(...values) {
-    this.list.add(...values);
+    for (let i = 0; i < values.length; i++) {
+      this.list.insert(values[i]);
+    }
+    this.top = this.list.head;
   }
   pop() {
     if (this.list.getSize() === 0) {
       throw `Cannot pop an empty stack`;
     }
-    return this.list.pop();
+    const popped = this.list.shift();
+    this.top = this.list.head;
+    return popped;
   }
   peek() {
     if (this.list.getSize() === 0) {
       throw `Cannot peek an empty stack`;
     }
-    return this.list.get(this.list.getSize() - 1);
+    return this.list.get(0);
   }
   toString() {
     return this.list.toString();
@@ -33,6 +41,8 @@ class Stack {
 class Queue {
   constructor(...values) {
     this.list = new LinkedList(...values);
+    //Adding a front simply because codefellows says to...
+    this.front = this.list.head;
   }
   enqueue(...values) {
     this.list.add(...values);
@@ -41,7 +51,9 @@ class Queue {
     if (this.list.getSize() === 0) {
       throw `Cannot dequeue an empty queue`;
     }
-    return this.list.shift();
+    const shifted = this.list.shift();
+    this.front = this.list.head;
+    return shifted;
   }
   peek() {
     if (this.list.getSize() === 0) {

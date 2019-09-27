@@ -11,12 +11,12 @@ describe('Stack', () => {
   });
   it('Can successfully push multiple values onto a stack', () => {
     stack.push(1, 2, 3, 4, 5);
-    expect(stack.toString()).toBe('[1, 2, 3, 4, 5]');
+    expect(stack.toString()).toBe('[5, 4, 3, 2, 1]');
   });
   it('Can successfully pop off the stack', () => {
     stack.push(1, 2, 3, 4, 5);
     expect(stack.pop()).toBe(5);
-    expect(stack.toString()).toBe('[1, 2, 3, 4]');
+    expect(stack.toString()).toBe('[4, 3, 2, 1]');
   });
   it('Can successfully empty a stack after multiple pops', () => {
     stack.push(1, 2, 3, 4, 5);
@@ -28,7 +28,7 @@ describe('Stack', () => {
   it('Can successfully peek the next item on the stack', () => {
     stack.push(1, 2, 3, 4, 5);
     expect(stack.peek()).toBe(5);
-    expect(stack.toString()).toBe('[1, 2, 3, 4, 5]');
+    expect(stack.toString()).toBe('[5, 4, 3, 2, 1]');
   });
   it('Can successfully instantiate an empty stack', () => {
     expect(stack.getSize()).toBe(0);

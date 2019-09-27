@@ -5,23 +5,35 @@ describe('Stack', () => {
   beforeEach(() => {
     stack = new Stack();
   });
-  it('Can add to the top using push', () => {
-    stack.push(1, 2, 3);
-    expect(stack.toString()).toBe('[1, 2, 3]');
+  it('Can successfully push onto a stack', () => {
+    stack.push(1);
+    expect(stack.toString()).toBe('[1]');
   });
-  it('Can remove from the top using pop', () => {
-    stack.push(1, 2, 3);
-    expect(stack.pop()).toBe(3);
-    expect(stack.pop()).toBe(2);
-    expect(stack.pop()).toBe(1);
+  it('Can successfully push multiple values onto a stack', () => {
+    stack.push(1, 2, 3, 4, 5);
+    expect(stack.toString()).toBe('[1, 2, 3, 4, 5]');
   });
-  it('Can check the value at the top using peek', () => {
-    stack.push(1, 2, 3);
-    expect(stack.peek()).toBe(3);
+  it('Can successfully pop off the stack', () => {
+    stack.push(1, 2, 3, 4, 5);
+    expect(stack.pop()).toBe(5);
+    expect(stack.toString()).toBe('[1, 2, 3, 4]');
   });
-  it('Will throw an error if trying to peek/pop an empty stack', () => {
-    expect(() => stack.peek()).toThrow('Cannot peek an empty stack');
-    expect(() => stack.pop()).toThrow('Cannot pop an empty stack');
+  it('Can successfully empty a stack after multiple pops', () => {
+    stack.push(1, 2, 3, 4, 5);
+    for (let i = 5; i >= 1; i--) {
+      expect(stack.pop()).toBe(i);
+    }
+    expect(() => stack.pop()).toThrow();
+  });
+  it('Can successfully peek the next item on the stack', () => {
+    stack.push(1, 2, 3, 4, 5);
+    expect(stack.peek()).toBe(5);
+    expect(stack.toString()).toBe('[1, 2, 3, 4, 5]');
+  });
+  it('Can successfully instantiate an empty stack', () => {
+    expect(stack.getSize()).toBe(0);
+    expect(stack.toString()).toBe('[]');
+    expect(stack.toArray()).toEqual([]);
   });
 });
 
@@ -30,22 +42,34 @@ describe('Queue', () => {
   beforeEach(() => {
     queue = new Queue();
   });
-  it('Can add to the end using enqueue', () => {
-    queue.enqueue(1, 2, 3);
-    expect(queue.toString()).toBe('[1, 2, 3]');
+  it('Can successfully enqueue into a queue', () => {
+    queue.enqueue(1);
+    expect(queue.toString()).toBe('[1]');
   });
-  it('Can remove from the front using dequeue', () => {
-    queue.enqueue(1, 2, 3);
+  it('Can successfully enqueue multiple values into a queue', () => {
+    queue.enqueue(1, 2, 3, 4, 5);
+    expect(queue.toString()).toBe('[1, 2, 3, 4, 5]');
+  });
+  it('Can successfully dequeue out of a queue the expected value', () => {
+    queue.enqueue(1, 2, 3, 4, 5);
     expect(queue.dequeue()).toBe(1);
-    expect(queue.dequeue()).toBe(2);
-    expect(queue.dequeue()).toBe(3);
+    expect(queue.toString()).toBe('[2, 3, 4, 5]');
   });
-  it('Can check the value at the front using peek', () => {
-    queue.enqueue(1, 2, 3);
+  it('Can successfully peek into a queue, seeing the expected value', () => {
+    queue.enqueue(1, 2, 3, 4, 5);
     expect(queue.peek()).toBe(1);
+    expect(queue.toString()).toBe('[1, 2, 3, 4, 5]');
   });
-  it('Will throw an error if trying to peek/dequeue an empty queue', () => {
-    expect(() => queue.peek()).toThrow('Cannot peek an empty queue');
-    expect(() => queue.dequeue()).toThrow('Cannot dequeue an empty queue');
+  it('Can successfully empty a queue after multiple dequeues', () => {
+    queue.enqueue(1, 2, 3, 4, 5);
+    for (let i = 1; i <= 5; i++) {
+      expect(queue.dequeue()).toBe(i);
+    }
+    expect(() => queue.dequeue()).toThrow();
+  });
+  it('Can successfully instantiate an empty queue', () => {
+    expect(queue.getSize()).toBe(0);
+    expect(queue.toString()).toBe('[]');
+    expect(queue.toArray()).toEqual([]);
   });
 });

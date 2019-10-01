@@ -39,4 +39,4 @@ describe('Animal Shelter', () => {
     expect(shelter.dequeue().name).toBe('Clifford');
     expect(shelter.dequeue().name).toBe('Smokey');
   });
-})
+});

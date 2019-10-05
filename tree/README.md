@@ -1,4 +1,4 @@
-# BinaryTree and BinarySearchTree
+# Tree
 A binary tree implementation (tree with only 2 branches per node), and a binary search tree implementation (binary tree, with the left branch nodes being less than the root, and the right side nodes being greater than the root, recursively)
 
 ## Challenge

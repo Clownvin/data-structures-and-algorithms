@@ -46,6 +46,7 @@ class AnimalShelter {
         throw `The shelter does not have a ${pref}`;
       }
     }
+
     if (this.list.getSize() > 0) {
       return this.list.shift();
     }

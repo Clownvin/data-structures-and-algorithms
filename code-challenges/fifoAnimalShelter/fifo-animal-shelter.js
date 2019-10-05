@@ -42,8 +42,9 @@ class AnimalShelter {
       if (animal) {
         this.list.removeElement(animal);
         return animal;
-      }
-      throw `Shelter does not contain a ${pref}`;
+      }/* else {
+        throw `The shelter does not have a ${pref}`;
+      }*/
     }
     if (this.list.getSize() > 0) {
       return this.list.shift();

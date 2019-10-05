@@ -1,5 +1,5 @@
 function javaHash(string) {
-  return [...string].reduce((hash, curr, index) => hash + ((index + 31) * curr.charCodeAt(0)), 0);
+  return [...string].reduce((hash, curr) => (hash * 31) + curr.charCodeAt(0), 0);
 }
 
 /*
@@ -26,6 +26,13 @@ function getBucket(key, buckets) {
   return buckets[hashToIndex(javaHash(key), buckets.length)];
 }
 
+function ensureString(key) {
+  if (typeof key !== 'string') {
+    key = JSON.stringify(key);
+  }
+  return key;
+}
+
 function formatValue(val) {
   if (typeof val === 'number') {
     return `${val}`;
@@ -43,7 +50,7 @@ class HashTable {
   }
 
   get(key) {
-    key = key.toString(); // Ensure key is string.
+    key = ensureString(key);
     const bucket = getBucket(key, this.buckets);
     for (const pair of bucket) {
       if (pair.key === key) {
@@ -54,7 +61,7 @@ class HashTable {
   }
 
   put(key, val) {
-    key = key.toString(); // Ensure key is string.
+    key = ensureString(key);
     const bucket = getBucket(key, this.buckets);
     for (const pair of bucket) {
       if (pair.key === key) {
@@ -71,7 +78,7 @@ class HashTable {
   }
 
   remove(key) {
-    key = key.toString(); // Ensure key is string.
+    key = ensureString(key);
     const bucket = getBucket(key, this.buckets);
     for (let i = 0; i < bucket.length; i++) {
       if (bucket[i].key === key) {
@@ -99,12 +106,12 @@ class HashTable {
     return acc;
   }
 
-  join(joiner = ',') {
-    return this.reduce((joined, val, key) => joined ? `${joined}${joiner}"${key}": ${formatValue(val)}` : `"${key}": ${formatValue(val)}`, '');
+  join(joiner = ', ', linker = ': ') {
+    return this.reduce((joined, val, key) => joined ? `${joined}${joiner}"${key}"${linker}${formatValue(val)}` : `"${key}"${linker}${formatValue(val)}`, '');
   }
 
   toString() {
-    return `{\n\t${this.join(',\n\t')}\n}`; //Prints JSON
+    return `{\n  ${this.join(',\n  ')}\n}`;
   }
 
   getSize() {

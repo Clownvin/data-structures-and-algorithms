@@ -1,101 +1,182 @@
 'use-strict';
 
+function callbackLeft(thisNode, traversal, callback, depth, order) {
+  let ret;
+  for (const node of thisNode.leftChildren) {
+    ret = node[traversal](callback, depth, order++) || ret;
+    if (ret)
+      break;
+  }
+  return ret;
+}
+
+function callbackRight(thisNode, traversal, callback, depth, order) {
+  let ret;
+  for (const node of thisNode.rightChildren) {
+    ret = node[traversal](callback, depth, order++) || ret;
+    if (ret)
+      break;
+  }
+  return ret;
+}
+
 class Node {
-  constructor(value) {
+  constructor(k, value) {
+    this.k = k;
     this.value = value;
-    this.right = null;
-    this.left = null;
+    this.leftChildren = [];
+    this.rightChildren = [];
   }
-}
-
-function addRecursivelyToBT(value, node, maxDepth, depth = 0) {
-  if (depth === maxDepth) {
-    return false;
+  addLeft(node) {
+    this.leftChildren.push(node);
   }
-  if (!node.left) {
-    node.left = new Node(value);
-    return true;
-  } else if (addRecursivelyToBT(value, node.left, maxDepth, depth + 1)) {
-    return true;
+  addRight(node) {
+    this.rightChildren.push(node);
   }
-  if (!node.right) {
-    node.right = new Node(value);
-    return true;
-  } else if (addRecursivelyToBT(value, node.right, maxDepth, depth + 1)) {
-    return true;
-  }
-  return false;
-}
-
-class BinaryTree {
-  constructor(rootValue) {
-    this.size = typeof rootValue !== 'undefined' ? 1 : 0;
-    this.root = this.size ? new Node(rootValue) : null;
-    this.height = this.size - 1;
-  }
-
   full() {
-    const topWidth = Math.pow(2, this.height);
-    return topWidth + (topWidth - 1) === this.size;
+    return (this.leftChildren.length + this.rightChildren.length) === this.k;
+  }
+  preOrder(callback, depth = 0, order = 0) {
+    return callback(this, depth, order)
+      || callbackLeft(this, 'preOrder', callback, depth + 1, order += 1)
+      || callbackRight(this, 'preOrder', callback, depth + 1, order += this.leftChildren.length)
+  }
+  inOrder(callback, depth = 0, order = 0) {
+    return callbackLeft(this, 'inOrder', callback, depth + 1, order)
+      || callback(this, depth, order += this.leftChildren.length)
+      || callbackRight(this, 'inOrder', callback, depth + 1, order += 1);
+  }
+  postOrder(callback, depth = 0, order = 0) {
+    return callbackLeft(this, 'postOrder', callback, depth + 1, order)
+      || callbackRight(this, 'postOrder', callback, depth + 1, order += this.leftChildren.length)
+      || callback(this, depth, order += this.rightChildren.length);
+  }
+}
+
+
+function calcSizeForDepth(k, depth) {
+  if (depth <= 0) {
+    return depth + 1;
+  }
+  return Math.pow(k, depth) + calcSizeForDepth(k, depth - 1);
+}
+
+class KaryTree {
+  constructor(k, rootValue) {
+    this.k = k;
+    this.size = 0;
+    this.root = null;
+    this.height = -1;
+    if (rootValue) {
+      this.add(rootValue);
+    }
+  }
+
+  perfect() {
+    return calcSizeForDepth(this.k, this.height) === this.size;
   }
 
   add(value) {
     if (!this.root) {
-      this.root = new Node(value);
+      this.height += 1;
+      this.root = new Node(this.k, value);
+    } else if (this.perfect()) {
+      this.height += 1;
+      this.root.inOrder((node) => {
+        node.addLeft(new Node(this.k, value));
+        return true;
+      });
     } else {
-      const maxDepth = this.full() ? this.height + 1 : this.height;
-      if (!addRecursivelyToBT(value, this.root, maxDepth)) {
-        throw `Failed to add to BinaryTree, this should never happen`;
-      }
-      this.height = maxDepth;
+      this.root.inOrder((node, depth) => {
+        if (depth > this.height - 1 || node.full()) {
+          return;
+        }
+        if (node.leftChildren.length === node.rightChildren.length) {
+          node.addLeft(new Node(this.k, value));
+        } else {
+          node.addRight(new Node(this.k, value));
+        }
+        return true;
+      });
     }
     this.size++;
   }
 
-  inOrder(node = this.root, values = []) {
-    if (!node) {
-      return values;
-    }
-    this.inOrder(node.left, values);
-    values.push(node.value);
-    this.inOrder(node.right, values);
-    return values;
+  reduceOrdered(order, callback, acc) {
+    this.root[order]((...args) => {
+      if (!acc) {
+        acc = args[0];
+      } else {
+        acc = callback(acc, ...args);
+      }
+    });
+    return acc;
   }
 
-  preOrder(node = this.root, values = []) {
-    if (!node) {
-      return values;
-    }
-    values.push(node.value);
-    this.preOrder(node.left, values);
-    this.preOrder(node.right, values);
-    return values;
+  reduce(callback, acc) {
+    return this.reduceOrdered('inOrder', callback, acc);
   }
 
-  postOrder(node = this.root, values = []) {
-    if (!node) {
-      return values;
+  preOrder(callback) {
+    if (callback) {
+      return this.root.preOrder(callback);
+    } else {
+      return this.reduceOrdered('preOrder', (acc, node) => {
+        acc.push(node.value);
+        return acc;
+      }, []);
     }
-    this.postOrder(node.left, values);
-    this.postOrder(node.right, values);
-    values.push(node.value);
-    return values;
+  }
+
+  inOrder(callback) {
+    if (callback) {
+      return this.root.inOrder(callback);
+    } else {
+      return this.reduceOrdered('inOrder', (acc, node) => {
+        acc.push(node.value);
+        return acc;
+      }, []);
+    }
+  }
+
+  postOrder(callback) {
+    if (callback) {
+      return this.root.postOrder(callback);
+    } else {
+      return this.reduceOrdered('postOrder', (acc, node) => {
+        acc.push(node.value);
+        return acc;
+      }, []);
+    }
+  }
+
+  contains(value) {
+    if (!this.root) {
+      return false;
+    }
+    return this.inOrder(node => node.value === value);
   }
 }
 
-function addRecursivelyToBST(value, node, depth = 0) {
-  if (node.value >= value) {
-    if (!node.left) {
-      node.left = new Node(value);
+class BinaryTree extends KaryTree {
+  constructor(rootValue) {
+    super(2, rootValue);
+  }
+}
+
+function addRecursivelyToBST(newNode, currNode, depth = 0) {
+  if (currNode.value >= newNode.value) {
+    if (!currNode.leftChildren.length) {
+      currNode.addLeft(newNode);
       return depth + 1;
     }
-    return addRecursivelyToBST(value, node.left, depth + 1);
+    return addRecursivelyToBST(newNode, currNode.leftChildren[0], depth + 1);
   }
-  if (!node.right) {
-    node.right = new Node(value);
+  if (!currNode.rightChildren.length) {
+    currNode.addRight(newNode);
     return depth + 1;
   }
-  return addRecursivelyToBST(value, node.right, depth + 1);
+  return addRecursivelyToBST(newNode, currNode.rightChildren[0], depth + 1);
 }
 
 class BinarySearchTree extends BinaryTree {
@@ -104,11 +185,12 @@ class BinarySearchTree extends BinaryTree {
   }
 
   add(value) {
+    const node = new Node(this.k, value);
     if (!this.root) {
-      this.root = new Node(value);
+      this.root = node;
       this.height++;
     } else {
-      const heightAdded = addRecursivelyToBST(value, this.root);
+      const heightAdded = addRecursivelyToBST(node, this.root);
       if (heightAdded > this.height) {
         this.height = heightAdded;
       }
@@ -124,10 +206,10 @@ class BinarySearchTree extends BinaryTree {
       return true;
     }
     if (node.value > value) {
-      return this.contains(value, node.left);
+      return this.contains(value, node.leftChildren[0]);
     }
-    return this.contains(value, node.right);
+    return this.contains(value, node.rightChildren[0]);
   }
 }
 
-module.exports = exports = {BinaryTree, BinarySearchTree};
+module.exports = exports = { BinaryTree, BinarySearchTree, KaryTree };

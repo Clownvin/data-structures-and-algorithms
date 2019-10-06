@@ -17,14 +17,19 @@ I made a BinaryTree class which has a root (which starts null), a size (how many
 I then made a BinarySearchTree which extends BinaryTree  
 
 ## API
+### KaryTree
+* add(value) - Adds the value to the next unfilled leaf on the current height, or adds it to the left and increases height if tree is perfect.
+* contains(value) - Checks if a value is in the tree.
+* inOrder([, callback]) - Invokes the callback for each value in "inOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
+* preOrder([, callback]) - Invokes the callback for each value in "preOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
+* postOrder([, callback]) - Invokes the callback for each value in "postOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
+
 ### BinaryTree
-* inOrder - Returns the values in the tree using an inOrder traversal.
-* preOrder - Returns the values in the tree using a preOrder traversal.
-* postOrder - Returns the valeus in the tree using a postOrder traversal.
+A KaryTree with a max node children of 2
 
 ### BinarySearchTree
-* add - Adds a value to the tree, in the correct spot using a recursive strategy
-* contains - Checks if a value is in the tree, using a recursive strategy.
+* add - Adds a value to the tree by traversing the nodes, going left if the value is less than or equal to the node, or right if greater.
+* contains - Checks if a value is in the tree.
 
 ## UML/Diagrams
 ![alt text](https://i.imgur.com/qGw8v4Q.jpg "Diagram from when testing tree height and width relationships")

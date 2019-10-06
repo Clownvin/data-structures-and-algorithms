@@ -114,15 +114,7 @@ class KaryTree {
   }
 
   reduce(callback, acc) {
-    this.reduceOrdered('inOrder', callback, acc);
-  }
-
-  forEachOrdered(order, callback) {
-    this.root[order](callback);
-  }
-
-  forEach(callback) {
-    this.forEachOrdered('inOrder', callback);
+    return this.reduceOrdered('inOrder', callback, acc);
   }
 
   preOrder(callback) {

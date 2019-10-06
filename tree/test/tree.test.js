@@ -102,6 +102,7 @@ describe('KaryTree', () => {
     expect(tree.contains(50)).toBeTruthy();
     expect(tree.contains(1)).toBeTruthy();
     expect(tree.contains(100)).toBeTruthy();
+    expect(tree.contains(0)).toBeFalsy();
   });
 
 });
@@ -217,5 +218,6 @@ describe('BinarySearchTree', () => {
     expect(tree.contains(50)).toBeTruthy();
     expect(tree.contains(1)).toBeTruthy();
     expect(tree.contains(100)).toBeTruthy();
+    expect(tree.contains(0)).toBeFalsy();
   });
 });

@@ -206,9 +206,9 @@ class BinarySearchTree extends BinaryTree {
       return true;
     }
     if (node.value > value) {
-      return this.contains(value, node.leftChildren[0]);
+      return this.contains(value, node.leftChildren[0] || null);
     }
-    return this.contains(value, node.rightChildren[0]);
+    return this.contains(value, node.rightChildren[0] || null);
   }
 }
 

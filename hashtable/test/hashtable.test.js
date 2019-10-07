@@ -1,4 +1,4 @@
-const HashTable = require('../hashtable');
+const HashTable = require('../hashtable.js');
 
 describe('HashTable', () => {
   let table;

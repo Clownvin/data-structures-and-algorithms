@@ -151,7 +151,7 @@ function listTest(List) {
 
       it('Will return true if there are no elements', () => {
         expect(list.every(num => num % 2 === 0)).toBeTruthy();
-      })
+      });
     });
 
     describe('push(...values)', () => {

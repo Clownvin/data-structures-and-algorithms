@@ -32,7 +32,7 @@ testSearchOnArrays(binarySearch);
 describe('', () => {
   it('\n\n\n', () => {
     expect(true).toEqual(true);
-  })
+  });
 }); // To add some spaces man
 
 testSearchOnArrays(recursiveBinarySearch);

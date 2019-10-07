@@ -8,6 +8,7 @@ class Stack {
     this.top = this.list.head;
   }
   push(...values) {
+    //For loop is to gaurantee correct order of adding to stack
     for (let i = 0; i < values.length; i++) {
       this.list.insert(values[i]);
     }

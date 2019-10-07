@@ -32,6 +32,7 @@ int main() {
   LL_VAL_TYPE stuff[] = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
   addArrayToList(list, stuff, 10);
   printList(list);
+  LL_VAL_TYPE found = findIn(list, )
   printf("Inserting to head a 1\n");
   insertIntoList(list, 0, 1);
   printList(list);

@@ -116,6 +116,9 @@ module.exports = exports = class LinkedList {
 
   get(index) {
     index = normalizeAndCheck(index, this.getSize());
+    if (index === this.getSize() - 1) {
+      return this.tail.value;
+    }
     const link = getLink(index, this.head);
     return link.value;
   }

@@ -53,7 +53,6 @@ class Node {
   }
 }
 
-
 function calcSizeForDepth(k, depth) {
   if (depth <= 0) {
     return depth + 1;
@@ -103,6 +102,9 @@ class KaryTree {
   }
 
   reduceOrdered(order, callback, acc) {
+    if (!this.root) {
+      return acc;
+    }
     this.root[order]((...args) => {
       if (!acc) {
         acc = args[0];
@@ -117,36 +119,53 @@ class KaryTree {
     return this.reduceOrdered('inOrder', callback, acc);
   }
 
+  forEachOrdered(order, callback) {
+    if (!this.root) {
+      return;
+    }
+    return this.root[order](callback);
+  }
+
+  forEach(callback) {
+    return this.forEachOrdered('inOrder', callback);
+  }
+
+  mapOrdered(order, callback) {
+    if (!this.root) {
+      return [];
+    }
+    const arr = [];
+    this.root[order]((...args) => {
+      arr.push(callback(...args));
+    });
+    return arr;
+  }
+
+  map(callback) {
+    return this.mapOrdered('inOrder', callback);
+  }
+
   preOrder(callback) {
     if (callback) {
-      return this.root.preOrder(callback);
+      return this.forEachOrdered('preOrder', callback);
     } else {
-      return this.reduceOrdered('preOrder', (acc, node) => {
-        acc.push(node.value);
-        return acc;
-      }, []);
+      return this.mapOrdered('preOrder', node => node.value);
     }
   }
 
   inOrder(callback) {
     if (callback) {
-      return this.root.inOrder(callback);
+      return this.forEachOrdered('inOrder', callback);
     } else {
-      return this.reduceOrdered('inOrder', (acc, node) => {
-        acc.push(node.value);
-        return acc;
-      }, []);
+      return this.mapOrdered('inOrder', node => node.value);
     }
   }
 
   postOrder(callback) {
     if (callback) {
-      return this.root.postOrder(callback);
+      return this.forEachOrdered('postOrder', callback);
     } else {
-      return this.reduceOrdered('postOrder', (acc, node) => {
-        acc.push(node.value);
-        return acc;
-      }, []);
+      return this.mapOrdered('postOrder', node => node.value);
     }
   }
 

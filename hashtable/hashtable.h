@@ -71,13 +71,13 @@ void printVal(pair_t pair) {
   printf("%s->%d, ", pair.key, pair.value);
 }
 
-bucket_t* getBucket(char* key, table_t table) {
-  int hashcode = hashToIndex(hash(key), table.bucketCount);
-  return &(table.buckets[hashcode]);
+bucket_t* getBucketFromTable(char* key, table_t* table) {
+  int hashcode = hashToIndex(hash(key), table->bucketCount);
+  return &(table->buckets[hashcode]);
 }
 
-HT_VAL_TYPE get(char* key, table_t table) {
-  bucket_t* bucket = getBucket(key, table);
+HT_VAL_TYPE getFromTable(char* key, table_t* table) {
+  bucket_t* bucket = getBucketFromTable(key, table);
   int i = 0;
   link_t* curr = bucket->head;
   while (i < bucket->size) {
@@ -90,12 +90,14 @@ HT_VAL_TYPE get(char* key, table_t table) {
   return NULL;
 }
 
-void put(char* key, HT_VAL_TYPE value, table_t table) {
-  bucket_t* bucket = getBucket(key, table);
+void putInTable(char* key, HT_VAL_TYPE value, table_t* table) {
+  bucket_t* bucket = getBucketFromTable(key, table);
   int i = 0;
   link_t* curr = bucket->head;
   while (i < bucket->size) {
-    if (!strcmp(curr->value.key, key)) {
+    printf("Comparing %s to %s: %d\n", curr->value.key, key, strcmp(curr->value.key, key));
+    if (strcmp(curr->value.key, key) == 0) {
+      printf("Updating value %d to %d\n", curr->value.value, value);
       curr->value.value = value;
       return;
     }
@@ -103,13 +105,34 @@ void put(char* key, HT_VAL_TYPE value, table_t table) {
     i++;
   }
   addToList(bucket, createPair(key, value));
-  table.size++;
+  table->size++;
+  printf("Added value %d, newsize: %d\n", value, table->size);
 }
 
-void printBuckets(table_t table) {
-  for (int i = 0; i < table.bucketCount; i++) {
+HT_VAL_TYPE removeFromTable(char* key, table_t* table) {
+  bucket_t* bucket = getBucketFromTable(key, table);
+  int i = 0;
+  link_t* prev = NULL;
+  link_t* curr = bucket->head;
+  while (i++ < bucket->size) {
+    if (!strcmp(curr->value.key, key)) {
+      if (prev != NULL) {
+        prev->next = curr->next;
+      }
+      bucket->size--;
+      table->size--;
+      return curr->value.value;
+    }
+    prev = curr;
+    curr = curr->next;
+  }
+  return NULL;
+}
+
+void printBuckets(table_t* table) {
+  for (int i = 0; i < table->bucketCount; i++) {
     printf("Bucket %d: ", i);
-    forEachIn(&(table.buckets[i]), printVal);
+    forEachIn(&(table->buckets[i]), printVal);
     printf("\n");
   }
 }

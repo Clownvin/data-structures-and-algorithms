@@ -95,9 +95,7 @@ void putInTable(char* key, HT_VAL_TYPE value, table_t* table) {
   int i = 0;
   link_t* curr = bucket->head;
   while (i < bucket->size) {
-    printf("Comparing %s to %s: %d\n", curr->value.key, key, strcmp(curr->value.key, key));
     if (strcmp(curr->value.key, key) == 0) {
-      printf("Updating value %d to %d\n", curr->value.value, value);
       curr->value.value = value;
       return;
     }
@@ -106,7 +104,6 @@ void putInTable(char* key, HT_VAL_TYPE value, table_t* table) {
   }
   addToList(bucket, createPair(key, value));
   table->size++;
-  printf("Added value %d, newsize: %d\n", value, table->size);
 }
 
 HT_VAL_TYPE removeFromTable(char* key, table_t* table) {

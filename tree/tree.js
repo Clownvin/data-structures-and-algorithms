@@ -1,19 +1,19 @@
 'use-strict';
 
-function callbackLeft(thisNode, traversal, callback, depth, order) {
+function traverseLeft(thisNode, traversal, callback, depth, order, ...args) {
   let ret;
   for (const node of thisNode.leftChildren) {
-    ret = node[traversal](callback, depth, order++) || ret;
+    ret = node[traversal](callback, depth, order++, ...args) || ret;
     if (ret)
       break;
   }
   return ret;
 }
 
-function callbackRight(thisNode, traversal, callback, depth, order) {
+function traverseRight(thisNode, traversal, callback, depth, order, ...args) {
   let ret;
   for (const node of thisNode.rightChildren) {
-    ret = node[traversal](callback, depth, order++) || ret;
+    ret = node[traversal](callback, depth, order++, ...args) || ret;
     if (ret)
       break;
   }
@@ -38,18 +38,32 @@ class Node {
   }
   preOrder(callback, depth = 0, order = 0) {
     return callback(this, depth, order)
-      || callbackLeft(this, 'preOrder', callback, depth + 1, order += 1)
-      || callbackRight(this, 'preOrder', callback, depth + 1, order += this.leftChildren.length)
+      || traverseLeft(this, 'preOrder', callback, depth + 1, order += 1)
+      || traverseRight(this, 'preOrder', callback, depth + 1, order += this.leftChildren.length);
   }
   inOrder(callback, depth = 0, order = 0) {
-    return callbackLeft(this, 'inOrder', callback, depth + 1, order)
+    return traverseLeft(this, 'inOrder', callback, depth + 1, order)
       || callback(this, depth, order += this.leftChildren.length)
-      || callbackRight(this, 'inOrder', callback, depth + 1, order += 1);
+      || traverseRight(this, 'inOrder', callback, depth + 1, order += 1);
   }
   postOrder(callback, depth = 0, order = 0) {
-    return callbackLeft(this, 'postOrder', callback, depth + 1, order)
-      || callbackRight(this, 'postOrder', callback, depth + 1, order += this.leftChildren.length)
+    return traverseLeft(this, 'postOrder', callback, depth + 1, order)
+      || traverseRight(this, 'postOrder', callback, depth + 1, order += this.leftChildren.length)
       || callback(this, depth, order += this.rightChildren.length);
+  }
+  breadthFirst(callback) {
+    const children = [];
+    children.push(this);
+    let ret;
+    while (children.length) {
+      const child = children.shift();
+      ret = callback(child);
+      if (ret) {
+        return ret;
+      }
+      children.push(...child.leftChildren);
+      children.push(...child.rightChildren);
+    }
   }
 }
 
@@ -166,6 +180,14 @@ class KaryTree {
       return this.forEachOrdered('postOrder', callback);
     } else {
       return this.mapOrdered('postOrder', node => node.value);
+    }
+  }
+
+  breadthFirst(callback) {
+    if (callback) {
+      return this.forEachOrdered('breadthFirst', callback);
+    } else {
+      return this.mapOrdered('breadthFirst', node => node.value);
     }
   }
 

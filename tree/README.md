@@ -23,6 +23,7 @@ I then made a BinarySearchTree which extends BinaryTree
 * inOrder([, callback]) - Invokes the callback for each value in "inOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
 * preOrder([, callback]) - Invokes the callback for each value in "preOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
 * postOrder([, callback]) - Invokes the callback for each value in "postOrder" order, or returns an array of the values in the tree using an inOrder traversal if no callback given.
+* breadthFirst([, callback]) - Invokes the callback for each value in "breadthFirst" order, or returns an array of the values in the tree using a breadthFirst traversal if no callback given.
 
 ### BinaryTree
 A KaryTree with a max node children of 2
@@ -33,3 +34,4 @@ A KaryTree with a max node children of 2
 
 ## UML/Diagrams
 ![alt text](https://i.imgur.com/qGw8v4Q.jpg "Diagram from when testing tree height and width relationships")
+![alt text](https://i.imgur.com/64Q4Cp8.jpg "Diagram from breadthFirst")

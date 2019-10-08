@@ -14,5 +14,10 @@ function getRandomEmoji() {
   return emojis[Math.floor(Math.random() * emojis.length)];
 }
 
-module.exports = exports = getRandomEmoji;
+function emojify(string) {
+  const emoji = getRandomEmoji();
+  return `${emoji} ${string} ${emoji}`;
+}
+
+module.exports = exports = {getRandomEmoji, emojify};
 

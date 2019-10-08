@@ -1,11 +1,7 @@
 'use-strict';
-const randomEmoji = require('../../../randomojis/randomojis');
-const fizzBuzzTree = require('../fizz-buzz-tree');
+const {emojify} = require('../../../randomojis/randomojis');
+const { fizzBuzzArray, fizzBuzzTree } = require('../fizz-buzz-tree');
 const {BinarySearchTree} = require('../../../tree/tree');
-
-function fizzBuzzArray(arr) {
-  return arr.map(num => num % 15 === 0 ? 'FizzBuzz' : num % 5 === 0 ? 'Buzz' : num % 3 === 0 ? 'Fizz' : num);
-}
 
 function getRandomNumber(trueRandom) {
   if (trueRandom) {
@@ -29,8 +25,7 @@ describe('FizzBuzzTree', () => {
   });
 
   for (let i = 1; i <= 100; i++) {
-    const emoji = randomEmoji();
-    it(`${emoji} Works for trees with ${i} nodes ${emoji}`, () => {
+    it(emojify(`Works for trees with ${i} nodes`), () => {
       for (let k = 0; k < 10; k++) {
         tree = new BinarySearchTree();
         for (let j = 0; j < i; j++) {
@@ -38,7 +33,6 @@ describe('FizzBuzzTree', () => {
         }
         const expected = fizzBuzzArray(tree.inOrder());
         const got = fizzBuzzTree(tree).inOrder();
-        //console.log(`Expecting ${expected} to equal ${got}`);
         expect(got).toStrictEqual(expected);
       }
     });

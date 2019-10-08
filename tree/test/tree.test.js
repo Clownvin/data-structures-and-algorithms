@@ -1,5 +1,7 @@
 'use-strict';
 
+const {emojify} = require('../../randomojis/randomojis');
+
 const {BinarySearchTree, KaryTree} = require('../tree');
 
 describe('KaryTree', () => {
@@ -81,6 +83,15 @@ describe('KaryTree', () => {
     tree.add(50);
     tree.add(100);
     expect(tree.postOrder()).toEqual([50, 100, 1]);
+  });
+
+  it(emojify('Can return a collection from a breadth-first traversal'), () => {
+    expect(tree.breadthFirst()).toEqual([]);
+    tree.add(50);
+    tree.add(100);
+    tree.add(1);
+    tree.add(4);
+    expect(tree.breadthFirst()).toEqual([50, 100, 4, 1]);
   });
 
   it('🍟 Can check for an element using contains 🍟', () => {
@@ -197,6 +208,25 @@ describe('BinarySearchTree', () => {
     tree.add(100);
     expect(tree.height).toBe(2);
     expect(tree.postOrder()).toEqual([100, 50, 1]);
+  });
+
+  it(emojify('Can return a collection from a breadth-first traversal'), () => {
+    expect(tree.breadthFirst()).toEqual([]);
+    tree.add(50);
+    tree.add(1);
+    tree.add(100);
+    expect(tree.height).toBe(1);
+    expect(tree.breadthFirst()).toEqual([50, 1, 100]);
+    tree = new BinarySearchTree(100);
+    tree.add(1);
+    tree.add(50);
+    expect(tree.height).toBe(2);
+    expect(tree.breadthFirst()).toEqual([100, 1, 50]);
+    tree = new BinarySearchTree(1);
+    tree.add(50);
+    tree.add(100);
+    expect(tree.height).toBe(2);
+    expect(tree.breadthFirst()).toEqual([1, 50, 100]);
   });
 
   it('🍟 Can check for an element using contains 🍟', () => {

@@ -7,5 +7,9 @@ class MaxTree extends BinaryTree {
     super(value);
   }
 
-  
+  findMaxValue() {
+    return this.reduce((max, node) => max < node.value ? node.value : max);
+  }
 }
+
+module.exports = exports = MaxTree;

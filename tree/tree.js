@@ -130,7 +130,7 @@ class KaryTree {
     }
     this.root[order]((...args) => {
       if (!acc) {
-        acc = args[0];
+        acc = args[0] ? args[0].value : args[0];
       } else {
         acc = callback(acc, ...args);
       }

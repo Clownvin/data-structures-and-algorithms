@@ -1,5 +1,7 @@
 'use-strict';
 
+const Queue = require('../stacks-and-queues/stacks-and-queues').Queue;
+
 function traverseLeft(thisNode, traversal, callback, depth, order, ...args) {
   let ret;
   for (const node of thisNode.leftChildren) {
@@ -27,42 +29,49 @@ class Node {
     this.leftChildren = [];
     this.rightChildren = [];
   }
+
   addLeft(node) {
     this.leftChildren.push(node);
   }
+
   addRight(node) {
     this.rightChildren.push(node);
   }
+
   full() {
     return (this.leftChildren.length + this.rightChildren.length) === this.k;
   }
+
   preOrder(callback, depth = 0, order = 0) {
     return callback(this, depth, order)
       || traverseLeft(this, 'preOrder', callback, depth + 1, order += 1)
       || traverseRight(this, 'preOrder', callback, depth + 1, order += this.leftChildren.length);
   }
+
   inOrder(callback, depth = 0, order = 0) {
     return traverseLeft(this, 'inOrder', callback, depth + 1, order)
       || callback(this, depth, order += this.leftChildren.length)
       || traverseRight(this, 'inOrder', callback, depth + 1, order += 1);
   }
+
   postOrder(callback, depth = 0, order = 0) {
     return traverseLeft(this, 'postOrder', callback, depth + 1, order)
       || traverseRight(this, 'postOrder', callback, depth + 1, order += this.leftChildren.length)
       || callback(this, depth, order += this.rightChildren.length);
   }
+
   breadthFirst(callback) {
-    const children = [];
-    children.push(this);
+    const children = new Queue();
+    children.enqueue(this);
     let ret;
-    while (children.length) {
-      const child = children.shift();
+    while (children.getSize()) {
+      const child = children.dequeue();
       ret = callback(child);
       if (ret) {
         return ret;
       }
-      children.push(...child.leftChildren);
-      children.push(...child.rightChildren);
+      children.enqueue(...child.leftChildren);
+      children.enqueue(...child.rightChildren);
     }
   }
 }

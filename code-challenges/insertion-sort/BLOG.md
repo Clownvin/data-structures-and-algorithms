@@ -12,7 +12,7 @@ It works by going through each memeber in the array, and shifting it to the left
 
 ## Readings and References
 ### Video
-[GeeksforGeeks](https://www.youtube.com/watch?v=OGzPmgsI-pQ)
+* [GeeksforGeeks](https://www.youtube.com/watch?v=OGzPmgsI-pQ)
 ### Articles
-[Wikipedia](https://en.wikipedia.org/wiki/Insertion_sort)
-[GeeksforGeeks](https://www.geeksforgeeks.org/insertion-sort/)
+* [Wikipedia](https://en.wikipedia.org/wiki/Insertion_sort)
+* [GeeksforGeeks](https://www.geeksforgeeks.org/insertion-sort/)

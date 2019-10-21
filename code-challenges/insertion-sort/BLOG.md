@@ -5,7 +5,8 @@ It's a sorting algorithm that sorts each member individually by moving them "dow
 ![alt-text](https://i.imgur.com/uqpTszU.jpg)
 
 ## Algorithm
-It works by going through each memeber in the array, and shifting it to the left until the leftmost value isn't greater than the current value. It starts at the leftmost value, and once it reaches the end all elements will be sorted.
+It works by going through each memeber in the array, and shifting it to the left until the leftmost value isn't greater than the current value. It starts at the leftmost value, and once it reaches the end all elements will be sorted.  
+Efficiency O(n)
 
 ## Psuedocode
 ![alt-text](https://i.imgur.com/2Mq6zGR.png)

@@ -2,7 +2,6 @@
 It sorts the array by moving elements to the left or right, depending on if they are greater or less than the currently "selected" value (called pivot)
 
 ## Diagram
-ASCII art, yay
 ![alt-text](https://i.imgur.com/3ghrn7W.jpg )
 
 ## Algorithm

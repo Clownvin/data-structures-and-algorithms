@@ -4,12 +4,12 @@ It sorts the array by diving it in half, then sorting each half, then rejoinging
 ## Diagram
 ASCII art, yay
 
-`[5, 4, 3, 2, 1]`
-`[5, 4, 3], [2, 1]`
-`[5, 4], [ 3]  [1, 2]`
-`[4, 5]   ||     ||  `
-`    [3, 4, 5]   ||  `
-`      [1, 2, 3, 4, 5]`
+`[5, 4, 3, 2, 1]`  
+`[5, 4, 3], [2, 1]`  
+`[5, 4], [ 3]  [1, 2]`  
+`[4, 5]   ||     ||  `  
+`    [3, 4, 5]   ||  `  
+`      [1, 2, 3, 4, 5]`  
 
 ## Algorithm
 Split the array in half

@@ -1,6 +1,6 @@
 'use-strict';
 
-const { emojify } = require('../../randomojis/randomojis');
+const { emojify } = require('../../../randomojis/randomojis');
 const mergeSort = require('../merge-sort');
 
 describe('Merge Sort', () => {

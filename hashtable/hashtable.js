@@ -60,6 +60,14 @@ class HashTable {
     return null;
   }
 
+  hash(key) {
+    return hashToIndex(javaHash(ensureString(key)), this.buckets.length);
+  }
+
+  contains(key) {
+    return !!this.get(key);
+  }
+
   put(key, val) {
     key = ensureString(key);
     const bucket = getBucket(key, this.buckets);

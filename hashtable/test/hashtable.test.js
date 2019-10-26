@@ -7,12 +7,25 @@ describe('HashTable', () => {
     table = new HashTable(5);
   });
 
-  it('Can put key-value pairs', () => {
+  it('Can put/add key-value pairs', () => {
     table.put(1, 1);
     table.put(2, 2);
     table.put('JERK!', 'Not me!');
     expect(table.getSize()).toBe(3);
     expect(JSON.parse(table.toString())).toStrictEqual({'1': 1, '2': 2, 'JERK!': 'Not me!'});
+  });
+
+  it('Can check if a key exists in the table using contains', () => {
+    table.put(1, 1);
+    expect(table.contains(1)).toBeTruthy();
+    expect(table.contains(0)).toBeFalsy();
+  });
+
+  it('Can get the hash of a value using hash', () => {
+    expect(table.hash((1).toString())).toBe(4);
+    expect(table.hash((1).toString())).toBe(4);
+    expect(table.hash((2).toString())).toBe(0);
+    expect(table.hash((2).toString())).toBe(0);
   });
 
   it('Can get key-value pairs', () => {

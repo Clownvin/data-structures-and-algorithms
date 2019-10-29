@@ -3,7 +3,7 @@
 const HashTable = require('../../hashtable/hashtable.js');
 
 function getWords(text) {
-  return text.replace(/\W+/g, ' ').split(/\s/);
+  return text.split(/\W+/);
 }
 
 function firstRepeating(text) {

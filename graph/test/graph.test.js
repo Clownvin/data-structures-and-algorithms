@@ -143,4 +143,56 @@ describe('Graph', () => {
   it('getSize() will return the size of the graph (number of vertices)', () => {
     expect(graph.getSize()).toBe(2);
   });
+
+  it('depthFirst() will invoke a callback for each vertex, depth first starting at a start vertex', () => {
+    graph = new Graph();
+    /*
+    a-c
+    |/
+    b-e-f
+    |
+    d
+    */
+    graph.add('a');
+    graph.add('b');
+    graph.add('c');
+    graph.add('d');
+    graph.add('e');
+    graph.add('f');
+    graph.addEdge('a', 'b');
+    graph.addEdge('a', 'c');
+    graph.addEdge('b', 'd');
+    graph.addEdge('b', 'e');
+    graph.addEdge('b', 'c');
+    graph.addEdge('e', 'f');
+    let arr = [];
+    graph.depthFirst('a', val => arr.push(val));
+    expect(arr).toEqual(['d', 'f', 'e', 'c', 'b', 'a']);
+  });
+
+  it('breadthFirst() will invoke a callback for each vertex, breadth first starting at a start vertex', () => {
+    graph = new Graph();
+    /*
+    a-c
+    |/
+    b-e-f
+    |
+    d
+    */
+    graph.add('a');
+    graph.add('b');
+    graph.add('c');
+    graph.add('d');
+    graph.add('e');
+    graph.add('f');
+    graph.addEdge('a', 'b');
+    graph.addEdge('a', 'c');
+    graph.addEdge('b', 'd');
+    graph.addEdge('b', 'e');
+    graph.addEdge('b', 'c');
+    graph.addEdge('e', 'f');
+    let arr = [];
+    graph.breadthFirst('a', val => arr.push(val));
+    expect(arr).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+  });
 });

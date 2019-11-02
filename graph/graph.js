@@ -1,7 +1,9 @@
 'use strict';
 
+const { Queue } = require('../stacks-and-queues/stacks-and-queues');
+
 function removeConnections(arrowsMap, vertex) {
-  for (const [_, arrows] of arrowsMap) {
+  for (const [from, arrows] of arrowsMap) {
     arrows.delete(vertex);
   }
 }
@@ -109,6 +111,30 @@ class Graph {
     const arr = [];
     this.arrows.forEach((arrows, from) => arrows.has(vertex) ? arr.push([from, arrows.get(vertex)]) : null);
     return arr;
+  }
+
+  breadthFirst(start, callback, stack = new Queue(), visited = new Set(start)) {
+    if (!this.includes(start)) throw `Graph does not contain vertex: ${start}`;
+    console.log('Doing', start);
+    callback(start);
+    for (const [end] of this.arrows.get(start)) {
+      if (visited.has(end)) continue;
+      visited.add(end);
+      console.log('Pushing', end);
+      stack.enqueue(end);
+    }
+    if (stack.getSize() === 0) return;
+    this.breadthFirst(stack.dequeue(), callback, stack, visited);
+  }
+
+  depthFirst(start, callback, visited = new Set()) {
+    if (!this.includes(start)) throw `Graph does not contain vertex: ${start}`;
+    visited.add(start);
+    for (const [end] of this.arrows.get(start)) {
+      if (visited.has(end)) continue;
+      this.depthFirst(end, callback, visited);
+    }
+    callback(start);
   }
 
 }

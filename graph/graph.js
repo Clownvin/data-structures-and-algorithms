@@ -3,6 +3,7 @@
 const { Queue } = require('../stacks-and-queues/stacks-and-queues');
 
 function removeConnections(arrowsMap, vertex) {
+  /* eslint-disable-next-line no-unused-vars */
   for (const [from, arrows] of arrowsMap) {
     arrows.delete(vertex);
   }

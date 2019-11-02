@@ -115,12 +115,10 @@ class Graph {
 
   breadthFirst(start, callback, stack = new Queue(), visited = new Set(start)) {
     if (!this.includes(start)) throw `Graph does not contain vertex: ${start}`;
-    console.log('Doing', start);
     callback(start);
     for (const [end] of this.arrows.get(start)) {
       if (visited.has(end)) continue;
       visited.add(end);
-      console.log('Pushing', end);
       stack.enqueue(end);
     }
     if (stack.getSize() === 0) return;

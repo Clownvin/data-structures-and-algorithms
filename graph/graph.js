@@ -1,68 +1,91 @@
 'use strict';
 
-import { isModuleDeclaration } from "@babel/types";
-
-/*
-AddNode()
-  Adds a new node to the graph
-  Takes in the value of that node
-  Returns the added node
-AddEdge()
-  Adds a new edge between two nodes in the graph
-  Include the ability to have a “weight”
-  Takes in the two nodes to be connected by the edge
-  Both nodes should already be in the Graph
-GetNodes()
-  Returns all of the nodes in the graph as a collection (set, list, or similar)
-GetNeighbors()
-  Returns a collection of nodes connected to the given node
-  Takes in a given node
-  Include the weight of the connection in the returned collection
-Size()
-  Returns the total number of nodes in the graph
-*/
-
-function removeFromEdgeMap(edgeMap, vertex) {
-  for (const edges of edgeMap) {
-    edges.delete(vertex);
+function removeConnections(arrowsMap, vertex) {
+  for (const [_, arrows] of arrowsMap) {
+    arrows.delete(vertex);
   }
+}
+
+function defaultReducer(weight1, weight2) {
+  if (typeof weight1 === 'undefined') {
+    return weight1;
+  }
+  if (typeof weight2 === 'undefined') {
+    return weight2;
+  }
+  if (weight1 === weight2) {
+    return weight1;
+  }
+  throw (
+    `Could not determine results from inequal weights.
+You should specify a reducer function that takes in the weight of both arrows using getEdgeWeight(start, end, reducer)`
+  );
 }
 
 class Graph {
   constructor() {
     this.vertices = new Set();
-    this.edgeMap = new Map();
+    this.arrows = new Map();
   }
 
   add(vertex) {
+    if (this.vertices.has(vertex)) throw `Graph already contains vertex: ${vertex}`;
     this.vertices.add(vertex);
-    this.edgeMap.set(vertex, new Map());
+    this.arrows.set(vertex, new Map());
+  }
+
+  addArrow(start, end, weight = 0) {
+    if (!this.includes(start)) throw `Graph does not contain start vertex: ${start}`;
+    if (!this.includes(end)) throw `Graph does not contain end vertex: ${end}`;
+    this.arrows.get(start).set(end, weight);
   }
 
   addEdge(start, end, weight = 0) {
-    this.edgeMap.get(start).set(end, weight);
+    this.addArrow(start, end, weight);
+    this.addArrow(end, start, weight);
   }
 
-  setWeight(start, end, weight) {
-    this.addEdge(start, end, weight);
+  setArrowWeight(start, end, weight) {
+    this.addArrow(start, end, weight);
   }
 
-  getWeight(start, end) {
-    return this.edgeMap.get(start).get(end);
+  setEdgeWeight(start, end, weight = 0) {
+    this.setArrowWeight(start, end, weight);
+    this.setArrowWeight(end, start, weight);
+  }
+
+  getArrowWeight(start, end) {
+    const arrows = this.arrows.get(start);
+    return arrows && arrows.get(end);
+  }
+
+  getEdgeWeight(start, end, reducer = defaultReducer) {
+    return reducer(this.getArrowWeight(start, end), this.getArrowWeight(end, start));
+  }
+
+  removeArrow(start, end) {
+    const arrows = this.arrows.get(start);
+    arrows && arrows.delete(end);
   }
 
   removeEdge(start, end) {
-    this.edgeMap.get(start).delete(end);
+    this.removeArrow(start, end);
+    this.removeArrow(end, start);
   }
 
-  adjacent(start, end) {
-    return this.edgeMap.get(start).contains(end);
+  hasArrow(start, end) {
+    const arrows = this.arrows.get(start);
+    return arrows && arrows.has(end);
+  }
+
+  hasEdge(start, end) {
+    return this.hasArrow(start, end) && this.hasArrow(end, start);
   }
 
   remove(vertex) {
     this.vertices.delete(vertex);
-    this.edgeMap.delete(vertex);
-    removeFromEdgeMap(this.edgeMap, vertex);
+    this.arrows.delete(vertex);
+    removeConnections(this.arrows, vertex);
   }
 
   getVertices() {
@@ -77,8 +100,15 @@ class Graph {
     return this.vertices.has(vertex);
   }
 
-  getNeighbors(vertex) {
-    return this.edgeMap.get(vertex).entries();
+  getArrowsFrom(vertex) {
+    const arrows = this.arrows.get(vertex);
+    return arrows ? [...arrows] : arrows;
+  }
+
+  getArrowsTo(vertex) {
+    const arr = [];
+    this.arrows.forEach((arrows, from) => arrows.has(vertex) ? arr.push([from, arrows.get(vertex)]) : null);
+    return arr;
   }
 
 }

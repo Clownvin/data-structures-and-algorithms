@@ -1,6 +1,7 @@
 'use strict';
 
 const { Queue } = require('../stacks-and-queues/stacks-and-queues');
+const TreeMap = require('../tree/avl-tree-map')((a, b) => a.localeCompare(b));
 
 function removeConnections(arrowsMap, vertex) {
   /* eslint-disable-next-line no-unused-vars */
@@ -21,68 +22,68 @@ function defaultReducer(weight1, weight2) {
   }
   throw (
     `Could not determine results from inequal weights.
-You should specify a reducer function that takes in the weight of both arrows using getEdgeWeight(start, end, reducer)`
+You should specify a reducer function that takes in the weight of both arrows using getEdgeWeight(from, to, reducer)`
   );
 }
 
 class Graph {
   constructor() {
     this.vertices = new Set();
-    this.arrows = new Map();
+    this.arrows = new TreeMap();
   }
 
   add(vertex) {
-    if (this.vertices.has(vertex)) throw `Graph already contains vertex: ${vertex}`;
+    if (this.includes(vertex)) throw `Graph already contains vertex: ${vertex}`;
     this.vertices.add(vertex);
-    this.arrows.set(vertex, new Map());
+    this.arrows.set(vertex, new TreeMap());
   }
 
-  addArrow(start, end, weight = 0) {
-    if (!this.includes(start)) throw `Graph does not contain start vertex: ${start}`;
-    if (!this.includes(end)) throw `Graph does not contain end vertex: ${end}`;
-    this.arrows.get(start).set(end, weight);
+  addArrow(from, to, weight = 0) {
+    if (!this.includes(from)) throw `Graph does not contain from vertex: ${from}`;
+    if (!this.includes(to)) throw `Graph does not contain to vertex: ${to}`;
+    this.arrows.get(from).set(to, weight);
   }
 
-  addEdge(start, end, weight = 0) {
-    this.addArrow(start, end, weight);
-    this.addArrow(end, start, weight);
+  addEdge(from, to, weight = 0) {
+    this.addArrow(from, to, weight);
+    this.addArrow(to, from, weight);
   }
 
-  setArrowWeight(start, end, weight) {
-    this.addArrow(start, end, weight);
+  setArrowWeight(from, to, weight) {
+    this.addArrow(from, to, weight);
   }
 
-  setEdgeWeight(start, end, weight = 0) {
-    this.setArrowWeight(start, end, weight);
-    this.setArrowWeight(end, start, weight);
+  setEdgeWeight(from, to, weight = 0) {
+    this.setArrowWeight(from, to, weight);
+    this.setArrowWeight(to, from, weight);
   }
 
-  getArrowWeight(start, end) {
-    const arrows = this.arrows.get(start);
-    return arrows && arrows.get(end);
+  getArrowWeight(from, to) {
+    const arrows = this.arrows.get(from);
+    return arrows && arrows.get(to);
   }
 
-  getEdgeWeight(start, end, reducer = defaultReducer) {
-    return reducer(this.getArrowWeight(start, end), this.getArrowWeight(end, start));
+  getEdgeWeight(from, to, reducer = defaultReducer) {
+    return reducer(this.getArrowWeight(from, to), this.getArrowWeight(to, from));
   }
 
-  removeArrow(start, end) {
-    const arrows = this.arrows.get(start);
-    arrows && arrows.delete(end);
+  removeArrow(from, to) {
+    const arrows = this.arrows.get(from);
+    arrows && arrows.delete(to);
   }
 
-  removeEdge(start, end) {
-    this.removeArrow(start, end);
-    this.removeArrow(end, start);
+  removeEdge(from, to) {
+    this.removeArrow(from, to);
+    this.removeArrow(to, from);
   }
 
-  hasArrow(start, end) {
-    const arrows = this.arrows.get(start);
-    return arrows && arrows.has(end);
+  hasArrow(from, to) {
+    const arrows = this.arrows.get(from);
+    return arrows && arrows.has(to);
   }
 
-  hasEdge(start, end) {
-    return this.hasArrow(start, end) && this.hasArrow(end, start);
+  hasEdge(from, to) {
+    return this.hasArrow(from, to) && this.hasArrow(to, from);
   }
 
   remove(vertex) {
@@ -114,26 +115,36 @@ class Graph {
     return arr;
   }
 
-  breadthFirst(start, callback, stack = new Queue(), visited = new Set(start)) {
-    if (!this.includes(start)) throw `Graph does not contain vertex: ${start}`;
-    callback(start);
-    for (const [end] of this.arrows.get(start)) {
-      if (visited.has(end)) continue;
-      visited.add(end);
-      stack.enqueue(end);
+  breadthFirst(from, callback, stack = new Queue(), visited = new Set(from)) {
+    if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
+    callback(from);
+    for (const [to] of this.arrows.get(from)) {
+      if (visited.has(to)) continue;
+      visited.add(to);
+      stack.enqueue(to);
     }
     if (stack.getSize() === 0) return;
     this.breadthFirst(stack.dequeue(), callback, stack, visited);
   }
 
-  depthFirst(start, callback, visited = new Set()) {
-    if (!this.includes(start)) throw `Graph does not contain vertex: ${start}`;
-    visited.add(start);
-    for (const [end] of this.arrows.get(start)) {
-      if (visited.has(end)) continue;
-      this.depthFirst(end, callback, visited);
+  preOrder(from, callback, visited = new Set()) {
+    if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
+    callback(from);
+    visited.add(from);
+    for (const [to] of this.arrows.get(from)) {
+      if (visited.has(to)) continue;
+      this.preOrder(to, callback, visited);
     }
-    callback(start);
+  }
+
+  postOrder(from, callback, visited = new Set()) {
+    if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
+    visited.add(from);
+    for (const [to] of this.arrows.get(from)) {
+      if (visited.has(to)) continue;
+      this.postOrder(to, callback, visited);
+    }
+    callback(from);
   }
 
 }

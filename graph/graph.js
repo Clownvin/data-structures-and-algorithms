@@ -28,13 +28,11 @@ You should specify a reducer function that takes in the weight of both arrows us
 
 class Graph {
   constructor() {
-    this.vertices = new Set();
     this.arrows = new TreeMap();
   }
 
   add(vertex) {
     if (this.includes(vertex)) throw `Graph already contains vertex: ${vertex}`;
-    this.vertices.add(vertex);
     this.arrows.set(vertex, new TreeMap());
   }
 
@@ -87,21 +85,20 @@ class Graph {
   }
 
   remove(vertex) {
-    this.vertices.delete(vertex);
     this.arrows.delete(vertex);
     removeConnections(this.arrows, vertex);
   }
 
   getVertices() {
-    return this.vertices;
+    return this.arrows.keys();
   }
 
   getSize() {
-    return this.vertices.size;
+    return this.arrows.size;
   }
 
   includes(vertex) {
-    return this.vertices.has(vertex);
+    return this.arrows.has(vertex);
   }
 
   getArrowsFrom(vertex) {

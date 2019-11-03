@@ -138,10 +138,7 @@ describe('Graph', () => {
   });
 
   it(emojify('getVertices() will return a Set of all vertices in the graph'), () => {
-    const verts = new Set();
-    verts.add('a');
-    verts.add('b');
-    expect(graph.getVertices()).toStrictEqual(verts);
+    expect([...graph.getVertices()]).toStrictEqual(['a', 'b']);
   });
 
   it(emojify('getSize() will return the size of the graph (number of vertices)'), () => {

@@ -55,6 +55,8 @@ describe('Graph', () => {
   });
 
   it(emojify('can add edges (start and end point at eachother) with addEdge(start, end)'), () => {
+    if (!graph.includes('a')) graph.add('a');
+    if (!graph.includes('b')) graph.add('b');
     graph.addEdge('a', 'b');
     expect(graph.hasEdge('a', 'b')).toBeTruthy();
   });
@@ -179,12 +181,12 @@ describe('Graph', () => {
   it(emojify('preOrder() will invoke a callback for each vertex, pre order starting at a start vertex'), () => {
     let arr = [];
     graph.preOrder('a', val => arr.push(val));
-    expect(arr).toEqual(['a', 'b', 'd', 'e', 'f', 'c']);
+    expect(arr).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 
   it(emojify('postOrder() will invoke a callback for each vertex, post order starting at a start vertex'), () => {
     let arr = [];
     graph.postOrder('a', val => arr.push(val));
-    expect(arr).toEqual(['d', 'f', 'e', 'c', 'b', 'a']);
+    expect(arr).toEqual(['c', 'd', 'f', 'e', 'b', 'a']);
   });
 });

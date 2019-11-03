@@ -1,5 +1,7 @@
 'use strict';
 
+const {Stack} = require('../stacks-and-queues/stacks-and-queues');
+
 function getTreeMap(compare) {
 
   class Node {
@@ -43,12 +45,19 @@ function getTreeMap(compare) {
     return node ? node.height : 0;
   }
 
-  function insert(start, key, value) {
-    if (!start) return new Node(key, value);
+  function insert(start, key, value, onNew) {
+    if (!start) {
+      onNew();
+      return new Node(key, value);
+    }
+    if (start.key === key) {
+      start.value = value;
+      return start;
+    }
     if (compare(key, start.key) <= 0) {
-      start.left = insert(start.left, key, value);
+      start.left = insert(start.left, key, value, onNew);
     } else {
-      start.right = insert(start.right, key, value);
+      start.right = insert(start.right, key, value, onNew);
     }
 
     start.height = Math.max(getHeight(start.left), getHeight(start.right)) + 1;
@@ -122,7 +131,7 @@ function getTreeMap(compare) {
   }
 
   function find(start, key) {
-    if (!start) return false;
+    if (!start) return;
     if (start.key === key) return start.value;
     if (compare(key, start.key) <= 0)
       return find(start.left, key);
@@ -157,9 +166,8 @@ function getTreeMap(compare) {
       this.size = root ? 1 : 0;
     }
 
-    add(key, value) {
-      this.size++;
-      this.root = insert(this.root, key, value);
+    set(key, value) {
+      this.root = insert(this.root, key, value, () => this.size++);
     }
 
     preOrder(callback) {
@@ -170,6 +178,10 @@ function getTreeMap(compare) {
       inOrder(this.root, callback);
     }
 
+    forEach(callback) {
+      this.inOrder(callback);
+    }
+
     postOrder(callback) {
       postOrder(this.root, callback);
     }
@@ -178,15 +190,43 @@ function getTreeMap(compare) {
       return contains(this.root, key);
     }
 
-    find(key) {
+    get(key) {
       return find(this.root, key);
     }
 
-    remove(key) {
+    delete(key) {
       let ret;
       this.root = remove(this.root, key, val => ret = val);
       this.size--;
       return ret;
+    }
+
+    *[Symbol.iterator]() {
+      let curr = this.root;
+      const stack = new Stack();
+      while (curr || stack.getSize() > 0) {
+        while (curr) {
+          stack.push(curr);
+          curr = curr.left;
+        }
+        curr = stack.pop();
+        yield [curr.key, curr.value];
+        curr = curr.right;
+      }
+    }
+
+    *keys() {
+      let curr = this.root;
+      const stack = new Stack();
+      while (curr || stack.getSize() > 0) {
+        while (curr) {
+          stack.push(curr);
+          curr = curr.left;
+        }
+        curr = stack.pop();
+        yield curr.key;
+        curr = curr.right;
+      }
     }
   }
 

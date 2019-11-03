@@ -1,6 +1,7 @@
 'use strict';
 
 const { Queue } = require('../stacks-and-queues/stacks-and-queues');
+const TreeMap = require('../tree/avl-tree-map')((a, b) => a.localeCompare(b));
 
 function removeConnections(arrowsMap, vertex) {
   /* eslint-disable-next-line no-unused-vars */
@@ -28,13 +29,13 @@ You should specify a reducer function that takes in the weight of both arrows us
 class Graph {
   constructor() {
     this.vertices = new Set();
-    this.arrows = new Map();
+    this.arrows = new TreeMap();
   }
 
   add(vertex) {
     if (this.includes(vertex)) throw `Graph already contains vertex: ${vertex}`;
     this.vertices.add(vertex);
-    this.arrows.set(vertex, new Map());
+    this.arrows.set(vertex, new TreeMap());
   }
 
   addArrow(from, to, weight = 0) {

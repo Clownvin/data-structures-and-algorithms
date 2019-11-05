@@ -113,7 +113,7 @@ function getTreeMap(compare) {
 
     start.height = Math.max(getHeight(start.left), getHeight(start.right)) + 1;
     right.height = Math.max(getHeight(right.left), getHeight(right.right)) + 1;
-    
+
     return right;
   }
 

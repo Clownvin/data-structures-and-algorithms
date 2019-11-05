@@ -112,17 +112,31 @@ function getGraph(MapConstructor) {
       this.arrows.forEach((arrows, from) => arrows.has(vertex) ? arr.push([from, arrows.get(vertex)]) : null);
       return arr;
     }
+
+    hasPath(from, to) {
+      return this.breadthFirst(from, vertex => vertex === to);
+    }
+
+    ccBreadthFirst(from) {
+      const arr = [];
+      this.breadthFirst(from, vertex => {
+        arr.push(vertex);
+        return;
+      });
+      return arr;
+    }
   
     breadthFirst(from, callback, stack = new Queue(), visited = new Set(from)) {
       if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
-      callback(from);
+      let ret = callback(from);
+      if (ret) return ret;
       for (const [to] of this.arrows.get(from)) {
         if (visited.has(to)) continue;
         visited.add(to);
         stack.enqueue(to);
       }
       if (stack.getSize() === 0) return;
-      this.breadthFirst(stack.dequeue(), callback, stack, visited);
+      return this.breadthFirst(stack.dequeue(), callback, stack, visited);
     }
   
     preOrder(from, callback, visited = new Set()) {
@@ -144,7 +158,20 @@ function getGraph(MapConstructor) {
       }
       callback(from);
     }
-  
+
+    reduce(from, searchFunc, callback, acc) {
+      let hasAcc = !(typeof acc === 'undefined');
+      searchFunc(from, (vertex) => {
+        if (!hasAcc) {
+          acc = vertex;
+          hasAcc = true;
+        } else {
+          acc = callback(acc, vertex);
+        }
+      });
+      return acc;
+    }
+
   }
 
   return Graph;

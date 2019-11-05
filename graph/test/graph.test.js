@@ -173,20 +173,45 @@ describe('Unorded Graph (simply Graph)', () => {
     graph.addEdge('b', 'c');
     graph.addEdge('e', 'f');
     let arr = [];
-    graph.breadthFirst('a', val => arr.push(val));
+    graph.breadthFirst('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 
   it(emojify('preOrder() will invoke a callback for each vertex, pre order starting at a start vertex'), () => {
     let arr = [];
-    graph.preOrder('a', val => arr.push(val));
+    graph.preOrder('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['a', 'b', 'd', 'e', 'f', 'c']);
   });
 
   it(emojify('postOrder() will invoke a callback for each vertex, post order starting at a start vertex'), () => {
     let arr = [];
-    graph.postOrder('a', val => arr.push(val));
+    graph.postOrder('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['d', 'f', 'e', 'c', 'b', 'a']);
+  });
+
+  it(emojify('ccBreadthFirst returns a new array containing the nodes visited in breadth first order'), () => {
+    expect(graph.ccBreadthFirst('a')).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+    expect(graph.ccBreadthFirst('c')).toEqual(['c', 'a', 'b', 'd', 'e', 'f']);
+    expect(graph.ccBreadthFirst('d')).toEqual(['d', 'b', 'a', 'e', 'c', 'f']);
+  });
+
+  it(emojify('hasPath returns true if there is a path to a node'), () => {
+    graph.add('g');
+    for (const vertex of graph.getVertices()) {
+      if (vertex === 'g') {
+        continue;
+      }
+      expect(graph.hasPath(vertex, 'g')).toBeFalsy();
+    }
+    expect(graph.hasPath('a', 'f')).toBeTruthy();
+    expect(graph.hasPath('f', 'c')).toBeTruthy();
+    expect(graph.hasPath('d', 'a')).toBeTruthy();
   });
 });
 
@@ -357,19 +382,44 @@ describe('OrderedGraph', () => {
     graph.addEdge('b', 'c');
     graph.addEdge('e', 'f');
     let arr = [];
-    graph.breadthFirst('a', val => arr.push(val));
+    graph.breadthFirst('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 
   it(emojify('preOrder() will invoke a callback for each vertex, pre order starting at a start vertex'), () => {
     let arr = [];
-    graph.preOrder('a', val => arr.push(val));
+    graph.preOrder('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
   });
 
   it(emojify('postOrder() will invoke a callback for each vertex, post order starting at a start vertex'), () => {
     let arr = [];
-    graph.postOrder('a', val => arr.push(val));
+    graph.postOrder('a', val => {
+      arr.push(val);
+    });
     expect(arr).toEqual(['c', 'd', 'f', 'e', 'b', 'a']);
+  });
+
+  it(emojify('ccBreadthFirst returns a new array containing the nodes visited in breadth first order'), () => {
+    expect(graph.ccBreadthFirst('a')).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+    expect(graph.ccBreadthFirst('c')).toEqual(['c', 'a', 'b', 'd', 'e', 'f']);
+    expect(graph.ccBreadthFirst('d')).toEqual(['d', 'b', 'a', 'c', 'e', 'f']);
+  });
+
+  it(emojify('hasPath returns true if there is a path to a node'), () => {
+    graph.add('g');
+    for (const vertex of graph.getVertices()) {
+      if (vertex === 'g') {
+        continue;
+      }
+      expect(graph.hasPath(vertex, 'g')).toBeFalsy();
+    }
+    expect(graph.hasPath('a', 'f')).toBeTruthy();
+    expect(graph.hasPath('f', 'c')).toBeTruthy();
+    expect(graph.hasPath('d', 'a')).toBeTruthy();
   });
 });

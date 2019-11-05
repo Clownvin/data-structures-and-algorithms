@@ -81,6 +81,10 @@ class HashTable {
     this.size++;
   }
 
+  add(key, val) {
+    this.put(key, val);
+  }
+
   update(key, val) {
     this.put(key, val); // Put already will update... makes update kind of a silly method...
   }

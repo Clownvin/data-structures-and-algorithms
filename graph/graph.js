@@ -126,37 +126,41 @@ function getGraph(MapConstructor) {
       return arr;
     }
   
-    breadthFirst(from, callback, stack = new Queue(), visited = new Set(from)) {
+    breadthFirst(from, callback, queue = new Queue(), visited = new Set(from)) {
       if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
       let ret = callback(from);
       if (ret) return ret;
       for (const [to] of this.arrows.get(from)) {
         if (visited.has(to)) continue;
         visited.add(to);
-        stack.enqueue(to);
+        queue.enqueue(to);
       }
-      if (stack.getSize() === 0) return;
-      return this.breadthFirst(stack.dequeue(), callback, stack, visited);
+      if (queue.getSize() === 0) return;
+      return this.breadthFirst(queue.dequeue(), callback, queue, visited);
     }
   
     preOrder(from, callback, visited = new Set()) {
       if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
-      callback(from);
+      let ret = callback(from);
+      if (ret) return ret;
       visited.add(from);
       for (const [to] of this.arrows.get(from)) {
         if (visited.has(to)) continue;
-        this.preOrder(to, callback, visited);
+        ret = this.preOrder(to, callback, visited);
+        if (ret) return ret;
       }
     }
   
     postOrder(from, callback, visited = new Set()) {
       if (!this.includes(from)) throw `Graph does not contain vertex: ${from}`;
       visited.add(from);
+      let ret;
       for (const [to] of this.arrows.get(from)) {
         if (visited.has(to)) continue;
-        this.postOrder(to, callback, visited);
+        ret = this.postOrder(to, callback, visited);
+        if (ret) return ret;
       }
-      callback(from);
+      return callback(from);
     }
 
     reduce(from, searchFunc, callback, acc) {

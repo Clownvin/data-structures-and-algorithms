@@ -1,20 +1,4 @@
 ## Data Structures and Algorithms
 Simply a collection of "coding-challenges" assigned in 301-401
-## Code-Challenges:
-* [All-Methods](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/all-methods)
-* [Array-Binary-Search](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/array-binary-search)
-* [Array-Reverse](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/array-reverse)
-* [Array-Shift](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/array-shift)
-* [Chaining-Methods](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/chaining-methods)
-* [Filter](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/filter)
-* [For-Each](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/for-each)
-* [Map](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/map)
-* [Multi-Dimensional-Arrays](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/multi-dim-arrays)
-* [Object-Properties](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/object-properties)
-* [Reduce](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/reduce)
-* [Regex](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/regex)
-* [Regex2](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/regex2)
-* [Sort](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/sort)
-* [String-Methods](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/string-methods)
-* [String-Methods2](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/string-methods2)
-* [Value-Vs-Reference](https://github.com/Clownvin/data-structures-and-algorithms/tree/master/code-challenges/value-vs-reference)
+
+From Linked Lists to Graphs, there's just about everything here
